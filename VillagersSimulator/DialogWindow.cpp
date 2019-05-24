@@ -9,6 +9,24 @@ ve::CircleButton::CircleButton()
 {
 }
 
+ve::CircleButton::CircleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3)
+{
+	this->setTextures(texture1, texture2, texture3);
+}
+
+ve::CircleButton::CircleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, float radius)
+{
+	this->setTextures(texture1, texture2, texture3);
+	this->setRadius(radius);
+}
+
+ve::CircleButton::CircleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, float radius, sf::Vector2f position)
+{
+	this->setTextures(texture1, texture2, texture3);
+	this->setRadius(radius);
+	this->setPosition(position);
+}
+
 ve::CircleButton::~CircleButton()
 {
 }
@@ -18,27 +36,36 @@ ve::ButtonType ve::CircleButton::type() const
 	return CIRCLE_BUTTON;
 }
 
-void ve::CircleButton::checkButtonStatus(sf::Vector2f clickerPosition)
+void ve::Button::checkButtonStatus(sf::Vector2f clickerPosition)
 {
 	
 	if (this->m_clickAnimation == true)
 	{
+	
+
 		if (this->m_clock.getElapsedTime().asMilliseconds() < this->m_animationClickTime * 0.33f)
 		{
 			//first etap
-			this->m_clickState = ve::ClickState::CLICKED;
+			if (this->getClickState() == ve::ClickState::CLICKED)
+				this->setAnimationStage(ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK1);
+			else this->setAnimationStage(ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK1);
 			return;
 		}
 		else if(this->m_clock.getElapsedTime().asMilliseconds() < this->m_animationClickTime * 0.66f)
 		{
 			//second...
-			this->m_clickState = ve::ClickState::MOUSE_ON_OBJECT;
+			if (this->getClickState() == ve::ClickState::CLICKED)
+				this->setAnimationStage(ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK2);
+			else this->setAnimationStage(ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK2);
 			return;
 		}
 		else if (this->m_clock.getElapsedTime().asMilliseconds() < this->m_animationClickTime)
 		{
 			//third...
-			this->m_clickState = ve::ClickState::CLICKED;
+			if (this->getClickState() == ve::ClickState::CLICKED)
+				this->setAnimationStage(ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK2);
+			else this->setAnimationStage(ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK2);
+
 			return;
 		}
 		else
@@ -46,6 +73,11 @@ void ve::CircleButton::checkButtonStatus(sf::Vector2f clickerPosition)
 			//end
 			this->m_clickAnimation = false;
 
+			if (this->getClickState() != ve::ClickState::CLICKED) //it means that unclick animation is ended
+			{
+				this->unlock();
+			}
+			else
 			if ((this->m_additionalParameters & ve::PERMALOCK_WHEN_CLICKED) or (this->m_additionalParameters & ve::LOCK_WHEN_CLICKED))
 			{
 				this->m_clickState = ve::ClickState::CLICKED;
@@ -75,10 +107,8 @@ void ve::CircleButton::checkButtonStatus(sf::Vector2f clickerPosition)
 				{
 					if (this->m_additionalParameters & PERMALOCK_WHEN_CLICKED)return;
 					else if (this->m_additionalParameters & LOCK_WHEN_CLICKED)
-					{
-						this->unlock();
-						this->setClickState(ve::ClickState::MOUSE_ON_OBJECT);
-						sf::sleep(sf::milliseconds(100));
+					{				
+						this->unclick();
 					}
 					else return;
 				}
@@ -116,8 +146,41 @@ void ve::CircleButton::draw(sf::RenderWindow& window)
 	circleShape.setOrigin(sf::Vector2f(this->getRadius(), this->getRadius()));
 
 	//
-	switch (this->m_clickState)
+	if (this->m_clickAnimation)
 	{
+		if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK1)
+		{
+			circleShape.setTexture(this->getTexture3());
+			circleShape.setScale(1.04f, 1.04f);
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK2)
+		{
+			circleShape.setTexture(this->getTexture3());
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK3)
+		{
+			circleShape.setTexture(this->getTexture3());
+			circleShape.setScale(1.04f, 1.04f);
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK1)
+		{
+			circleShape.setTexture(this->getTexture1());
+			circleShape.setScale(1.04f, 1.04f);
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK2)
+		{
+			circleShape.setTexture(this->getTexture1());
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK3)
+		{
+			circleShape.setTexture(this->getTexture1());
+			circleShape.setScale(1.04f, 1.04f);
+		}
+	}
+	else
+	{
+		switch (this->m_clickState)
+		{
 		case ve::ClickState::NONE_CLICK:
 		{
 			circleShape.setTexture(this->getTexture1());
@@ -133,7 +196,10 @@ void ve::CircleButton::draw(sf::RenderWindow& window)
 			circleShape.setTexture(this->getTexture3());
 			break;
 		}
+		}
 	}
+	//
+	
 
 	
 	///TEXT
@@ -205,6 +271,13 @@ sf::Texture* ve::Button::getTexture3() const
 	return this->m_texture3;
 }
 
+void ve::Button::setTextures(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3)
+{
+	this->setTexture1(texture1);
+	this->setTexture2(texture2);
+	this->setTexture3(texture3);
+}
+
 void ve::Button::setClicked(bool isClicked)
 {
 	this->m_isClicked = isClicked;
@@ -214,6 +287,16 @@ void ve::Button::click()
 	this->m_clock.restart();
 	this->m_clickAnimation = true;
 	this->m_clickState = ve::ClickState::CLICKED;
+}
+void ve::Button::unclick()
+{
+	this->m_clock.restart();
+	this->m_clickAnimation = true;
+	this->m_clickState = ve::ClickState::MOUSE_ON_OBJECT;
+}
+void ve::Button::endAnimation()
+{
+	this->m_clickAnimation = false;
 }
 ve::ClickState ve::Button::getClickState() const
 {
@@ -298,6 +381,24 @@ ve::RectangleButton::RectangleButton()
 {
 }
 
+ve::RectangleButton::RectangleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3)
+{
+	this->setTextures(texture1, texture2, texture3);
+}
+
+ve::RectangleButton::RectangleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, sf::Vector2f size)
+{
+	this->setTextures(texture1, texture2, texture3);
+	this->setSize(size);
+}
+
+ve::RectangleButton::RectangleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, sf::Vector2f size, sf::Vector2f position)
+{
+	this->setTextures(texture1, texture2, texture3);
+	this->setSize(size);
+	this->setPosition(position);
+}
+
 ve::RectangleButton::~RectangleButton()
 {
 }
@@ -305,6 +406,96 @@ ve::RectangleButton::~RectangleButton()
 ve::ButtonType ve::RectangleButton::type() const
 {
 	return RECTANGLE_BUTTON;
+}
+
+bool ve::RectangleButton::isMouseInButtonArea(sf::Vector2f clickerPosition)
+{
+	if (clickerPosition.x >= (this->getPosition().x - this->getSize().x / 2.0f) and clickerPosition.x <= (this->getPosition().x + this->getSize().x / 2.0f))
+	{
+		if (clickerPosition.y >= (this->getPosition().y - this->getSize().y / 2.0f) and clickerPosition.y <= (this->getPosition().y + this->getSize().y / 2.0f))
+			return true;
+		else return false;
+	}
+	else return false;
+}
+void ve::RectangleButton::draw(sf::RenderWindow& window)
+{
+	sf::RectangleShape rectangleShape;
+	rectangleShape.setSize(this->getSize());
+	rectangleShape.setPosition(this->getPosition());
+	rectangleShape.setOrigin(this->getSize()/2.0f);
+
+	//
+	if (this->m_clickAnimation)
+	{
+		if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK1)
+		{
+			rectangleShape.setTexture(this->getTexture3());
+			rectangleShape.setScale(1.04f, 1.04f);
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK2)
+		{
+			rectangleShape.setTexture(this->getTexture3());
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK3)
+		{
+			rectangleShape.setTexture(this->getTexture3());
+			rectangleShape.setScale(1.04f, 1.04f);
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK1)
+		{
+			rectangleShape.setTexture(this->getTexture1());
+			rectangleShape.setScale(1.04f, 1.04f);
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK2)
+		{
+			rectangleShape.setTexture(this->getTexture1());
+		}
+		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK3)
+		{
+			rectangleShape.setTexture(this->getTexture1());
+			rectangleShape.setScale(1.04f, 1.04f);
+		}
+	}
+	else
+	{
+		switch (this->m_clickState)
+		{
+		case ve::ClickState::NONE_CLICK:
+		{
+			rectangleShape.setTexture(this->getTexture1());
+			break;
+		}
+		case ve::ClickState::MOUSE_ON_OBJECT:
+		{
+			rectangleShape.setTexture(this->getTexture2());
+			break;
+		}
+		case ve::ClickState::CLICKED:
+		{
+			rectangleShape.setTexture(this->getTexture3());
+			break;
+		}
+		}
+	}
+	//
+
+
+
+	///TEXT
+	//TODO:
+
+	window.draw(rectangleShape);
+}
+
+void ve::RectangleButton::setSize(sf::Vector2f size)
+{
+	this->m_size = size; 
+}
+
+sf::Vector2f ve::RectangleButton::getSize() const
+{
+	return this->m_size;
 }
 
 
@@ -317,7 +508,7 @@ ve::DialogWindowControler::~DialogWindowControler()
 {
 }
 
-void ve::DialogWindowControler::addElement(Button* dialogWindow)
+void ve::DialogWindowControler::addElement(ve::Button* dialogWindow)
 {
 	this->m_buttonContainer.push_back(dialogWindow);
 }
@@ -346,18 +537,112 @@ ve::Button* ve::DialogWindowControler::getButtonPtr(unsigned id)
 	else return nullptr;
 }
 
-ve::PolygonButton::PolygonButton()
+ve::ButtonsPanel::ButtonsPanel()
 {
 }
 
-ve::PolygonButton::~PolygonButton()
+ve::ButtonsPanel::~ButtonsPanel()
 {
+	this->release();
 }
 
-ve::ButtonType ve::PolygonButton::type() const
+void ve::ButtonsPanel::draw(sf::RenderWindow& window)
 {
-	return POLYGON_BUTTON;
+	for (int i = 0; i < this->m_container.size(); i++)
+		this->m_container[i]->draw(window);
+}
+
+void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
+{
+	//checkStatus to all buttons
+	for (int i = 0; i < this->m_container.size(); i++)
+	{
+		this->m_container[i]->checkButtonStatus(clickerPosition);
+		//check if number of maximum clicked buttons is correct
+		if (this->m_container[i]->getClickState() == ve::ClickState::CLICKED)
+		{
+			//check if button is already notices as clicked button
+			bool isOnList = false;
+
+			for (int j = 0; j < this->m_clickedButtonsId.size(); j++)
+			{
+				if (this->m_clickedButtonsId[j] == i)isOnList == true;
+			}
+
+			if (isOnList)
+			{
+				//everything is good
+				this->m_container[i]->lock();
+			}
+			else
+			{
+				//check if there is space for next button to clicked list
+				if (this->m_clickedButtonsId.size() >= this->getMaximumClickedButtons())
+				{
+					//there is no space
+					//delete animation if is
+					this->m_container[i]->endAnimation();
+				}
+				else
+				{
+					//add new button to list
+					this->m_clickedButtonsId.push_back(i);
+					continue;
+				}
+			}
+		}
+	}
+		
+	
+	
+
+}
+
+void ve::ButtonsPanel::setMaximumClickedButtons(unsigned val)
+{
+	this->m_maximumClickedButtons = val;
+}
+
+unsigned ve::ButtonsPanel::getMaximumClickedButtons() const
+{
+	return this->m_maximumClickedButtons;
+}
+
+int ve::ButtonsPanel::addButton(ve::Button* button)
+{
+	if (button == nullptr)
+		return -1;
+
+	this->m_container.push_back(button);
+
+	return this->m_container.size() - 1;
 }
 
 
+ve::Button* ve::ButtonsPanel::getButtonPtr(int id)
+{
+	if (id < 0 or id >= this->m_container.size())
+		return nullptr;
 
+	return this->m_container[id];
+}
+
+bool ve::ButtonsPanel::isButtonClicked(int id)
+{
+	if (id < 0 or id >= this->m_container.size())
+		return false;
+
+	if (this->m_container[id]->getClickState() == ve::ClickState::CLICKED)return true;
+	else return false;
+}
+
+void ve::ButtonsPanel::release()
+{
+	for (int i = 0; i < this->m_container.size(); i++)
+	{
+		delete this->m_container[i];
+	}
+
+	this->m_container.clear();
+
+}

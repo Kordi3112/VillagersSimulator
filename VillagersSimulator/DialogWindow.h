@@ -53,7 +53,7 @@ namespace ve
 		//
 		virtual void draw(sf::RenderWindow& RenderWindow) = 0;
 		//
-		virtual void checkButtonStatus(sf::Vector2f clickerPosition) = 0;
+		void checkButtonStatus(sf::Vector2f clickerPosition);
 		virtual bool isMouseInButtonArea(sf::Vector2f clickerPosition) = 0;
 		bool isAreaClicked(); //if u check that automaticaly make isClicked = false 
 		//
@@ -71,8 +71,12 @@ namespace ve
 		void setTexture3(sf::Texture* texture);
 		sf::Texture* getTexture3() const;
 		//
+		void setTextures(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3);
+		//
 		void setClicked(bool isClicked); //manualy set if button is clicked
-		void click(); //starts clicke animation
+		void click(); //starts click animation
+		void unclick();//starts unclick animation
+		void endAnimation();
 		ClickState getClickState() const;
 		ClickAnimationStage getAnimationStage() const;
 		//
@@ -119,25 +123,34 @@ namespace ve
 	{
 	public:
 		RectangleButton();
+		RectangleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3);
+		RectangleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, sf::Vector2f size);
+		RectangleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, sf::Vector2f size, sf::Vector2f position);
 		~RectangleButton();
 		//
 		ButtonType type() const;
 		//
-		void draw(sf::RenderWindow& window) override
-		{
-			std::cout << "CircleButton" << std::endl;
-		}
+		bool isMouseInButtonArea(sf::Vector2f clickerPosition) override;
+		//
+		void draw(sf::RenderWindow& window) override;
+		//
+		void setSize(sf::Vector2f size);
+		sf::Vector2f getSize() const;
+	private:
+		sf::Vector2f m_size;
 	};
 
 	class CircleButton : public Button
 	{
 	public:
 		CircleButton();
+		CircleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3);
+		CircleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, float radius);
+		CircleButton(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3, float radius, sf::Vector2f position);
 		~CircleButton();
 		//
 		ButtonType type() const;
 		//
-		void checkButtonStatus(sf::Vector2f clickerPosition) override;
 		bool isMouseInButtonArea(sf::Vector2f clickerPosition) override;
 		//
 		void draw(sf::RenderWindow& window) override;
@@ -149,7 +162,7 @@ namespace ve
 	private:
 		float m_radius;
 	};
-
+	/*
 	class PolygonButton : public Button
 	{
 	public:
@@ -158,14 +171,13 @@ namespace ve
 		//
 		ButtonType type() const;
 		//
-		void draw(sf::RenderWindow& window) override
-		{
-
-		}
+		bool isMouseInButtonArea(sf::Vector2f clickerPosition) override;
+		//
+		void draw(sf::RenderWindow& window) override;
 	private:
 		std::vector<sf::Vector2f> m_bounds;
 
-
+	*/
 	class ButtonsPanel //a few buttons which are connected, if some button is clicked others are unclicked, like choose one panel
 	{
 	public:
@@ -175,13 +187,23 @@ namespace ve
 		void draw(sf::RenderWindow& window);
 		//
 		void checkStatus(sf::Vector2f clickerPosition);
+		//
+		void setMaximumClickedButtons(unsigned val); // how much buttons can be clicked it this same time
+		unsigned getMaximumClickedButtons() const;
+		//
+		int addButton(ve::Button* button);//returns button id
+		//
+		ve::Button* getButtonPtr(int id);
+		//
+		bool isButtonClicked(int id);
+		//
+		void release(); //clean up buttons
 	private:
 		std::vector<Button*> m_container;
+		//
+		unsigned m_maximumClickedButtons = 1;
+		std::vector<unsigned> m_clickedButtonsId;
 	};
-
-
-	};
-
 
 
 	///=////////////////////////////////////////////////////

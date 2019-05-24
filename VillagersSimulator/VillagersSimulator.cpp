@@ -40,30 +40,39 @@ int main()
 	hMainEngine->setViewPort(sf::Rect<float>(0.1f, 0.1f, 0.8f, 0.5f));
 	//JUNK
 	TexturePack buttonTexturePack1;
-	buttonTexturePack1.loadNewTexture("noneclick", "../data/texturepacks/button2/noneclick.png");
-	buttonTexturePack1.loadNewTexture("onIt", "../data/texturepacks/button2/onIt.png");
-	buttonTexturePack1.loadNewTexture("click", "../data/texturepacks/button2/click.png");
+	buttonTexturePack1.loadNewTexture("noneclick", "../data/texturepacks/button1/noneclick.png");
+	buttonTexturePack1.loadNewTexture("onIt", "../data/texturepacks/button1/onIt.png");
+	buttonTexturePack1.loadNewTexture("click", "../data/texturepacks/button1/click.png");
+	//
+	ve::DialogWindowControler DialogWindowControler;
+	//
+	ve::CircleButton circleButton;
+	circleButton.setTexture1(buttonTexturePack1.getTexturePtr("noneclick"));
+	circleButton.setTexture2(buttonTexturePack1.getTexturePtr(1));
+	circleButton.setTexture3(buttonTexturePack1.getTexturePtr(2));
 
-	std::cout << buttonTexturePack1.getTextureName(0);
-	std::cout << buttonTexturePack1.getTextureName(1);
-	std::cout << buttonTexturePack1.getTextureName(2);
+	circleButton.setPosition(sf::Vector2f(600,600));
+	circleButton.setRadius(80);
+	circleButton.setAdditionalParameters(ve::LOCK_WHEN_CLICKED);
 
-	
-	ve::CircleButton* circleButton = new ve::CircleButton();
-	circleButton->setTexture1(buttonTexturePack1.getTexturePtr("noneclick"));
-	circleButton->setTexture2(buttonTexturePack1.getTexturePtr(1));
-	circleButton->setTexture3(buttonTexturePack1.getTexturePtr(2));
+	ve::RectangleButton rectangleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"));
 
-	circleButton->setPosition(sf::Vector2f(300,300));
-	circleButton->setRadius(141);
-	circleButton->setAdditionalParameters(ve::LOCK_WHEN_CLICKED);
+	rectangleButton.setPosition(sf::Vector2f(900, 600));
+	rectangleButton.setSize(sf::Vector2f(100, 100));
+	rectangleButton.setAdditionalParameters(ve::LOCK_WHEN_CLICKED);
+	//
+	ve::ButtonsPanel ButtonsPanel;
+	ButtonsPanel.setMaximumClickedButtons(2);
+	//Button1
+	ve::CircleButton* CircleButton1 = new ve::CircleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),50,sf::Vector2f(1200,500));
+	ve::CircleButton* CircleButton2 = new ve::CircleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),50,sf::Vector2f(1200,350));
+	ve::CircleButton* CircleButton3 = new ve::CircleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),50,sf::Vector2f(1200,650));
+	ve::RectangleButton* RectangleButton1 = new ve::RectangleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),sf::Vector2f(100,100),sf::Vector2f(1200,800));
 
-	//circleButton->setColor(sf::Color::Red);
-	//circleButton->setPosition(sf::Vector2f(300, 300));
-	//circleButton->setRadius(100);
-	
-
-	//delete dialog;
+	ButtonsPanel.addButton(CircleButton1);
+	ButtonsPanel.addButton(CircleButton2);
+	ButtonsPanel.addButton(CircleButton3);
+	ButtonsPanel.addButton(RectangleButton1);
 
 	//Thread
 	sf::Thread thread(&MainEngine::ThreadFunction, hMainEngine); //thread function is inside MainEngine class
@@ -98,7 +107,11 @@ int main()
 			}
 		}
 		///--------------REFRESH COTROLERS
-		circleButton->checkButtonStatus(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
+		circleButton.checkButtonStatus(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
+		rectangleButton.checkButtonStatus(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
+
+		ButtonsPanel.checkStatus(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
+
 		//
 		int refreshTimeUs = frameTimeClock.getElapsedTime().asMicroseconds();
 		frameTimeClock.restart();
@@ -116,7 +129,9 @@ int main()
 		hMainEngine->draw(hWindow);
 		terrain.renderChunks(hWindow, cameraPos, sf::Rect<float>(0.02f, 0.02f, 0.3f, 0.3f), g_zoom);
 		//
-		//circleButton->draw(hWindow);
+		circleButton.draw(hWindow);
+		rectangleButton.draw(hWindow);
+		ButtonsPanel.draw(hWindow);
 		hWindow.display();
 		FPS++;
 		//
@@ -131,7 +146,6 @@ int main()
 	//delete thread
 	thread.terminate();
 	//clean memory
-	delete circleButton;
 	terrain.releaseChunks();
 	delete hMainEngine;
 	//
