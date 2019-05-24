@@ -287,6 +287,7 @@ void ve::Button::click()
 	this->m_clock.restart();
 	this->m_clickAnimation = true;
 	this->m_clickState = ve::ClickState::CLICKED;
+	this->m_isClicked = true;
 }
 void ve::Button::unclick()
 {
@@ -554,6 +555,7 @@ void ve::ButtonsPanel::draw(sf::RenderWindow& window)
 
 void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 {
+	
 	//checkStatus to all buttons
 	for (int i = 0; i < this->m_container.size(); i++)
 	{
@@ -566,7 +568,7 @@ void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 
 			for (int j = 0; j < this->m_clickedButtonsId.size(); j++)
 			{
-				if (this->m_clickedButtonsId[j] == i)isOnList == true;
+				if (this->m_clickedButtonsId[j] == i)isOnList = true;
 			}
 
 			if (isOnList)
@@ -580,8 +582,20 @@ void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 				if (this->m_clickedButtonsId.size() >= this->getMaximumClickedButtons())
 				{
 					//there is no space
-					//delete animation if is
-					this->m_container[i]->endAnimation();
+					//make space for new button
+					if (this->m_clickedButtonsId.size() == 1)
+					{
+						this->m_clickedButtonsId[0] = i;
+					}
+					else
+					{
+						for (int j = this->m_clickedButtonsId.size() - 1; j > 0; j++)
+						{
+
+						}
+					}
+
+				
 				}
 				else
 				{
@@ -592,10 +606,15 @@ void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 			}
 		}
 	}
+	/*
+	//
+	//checkStatus to all buttons
+	for (int i = 0; i < this->m_container.size(); i++)
+	{
+		this->m_container[i]->checkButtonStatus(clickerPosition);
 		
-	
-	
-
+	}
+	*/
 }
 
 void ve::ButtonsPanel::setMaximumClickedButtons(unsigned val)
@@ -613,6 +632,7 @@ int ve::ButtonsPanel::addButton(ve::Button* button)
 	if (button == nullptr)
 		return -1;
 
+	button->setAdditionalParameters(ve::LOCK_WHEN_CLICKED);
 	this->m_container.push_back(button);
 
 	return this->m_container.size() - 1;
@@ -640,6 +660,7 @@ void ve::ButtonsPanel::release()
 {
 	for (int i = 0; i < this->m_container.size(); i++)
 	{
+		if(this->m_container[i]!=nullptr)
 		delete this->m_container[i];
 	}
 
