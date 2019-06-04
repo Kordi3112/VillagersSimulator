@@ -1,22 +1,10 @@
 ﻿  VillagersSimulator.cpp
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(66,26): warning C4244:  'argument': conversion from 'time_t' to 'int', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:             T=int
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         and
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:             T=int
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         and
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(98,21): warning C4244:  'initializing': conversion from 'sf::Int64' to 'int', possible loss of data
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(41,67): warning C4305:  'argument': truncation from 'double' to 'T'
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(41,67): warning C4305:         with
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(41,67): warning C4305:         [
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(41,67): warning C4305:             T=float
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(41,67): warning C4305:         ]
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(64,129): warning C4305:  'argument': truncation from 'double' to 'float'
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(70,26): warning C4244:  'argument': conversion from 'time_t' to 'int', possible loss of data
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(99,21): warning C4244:  'initializing': conversion from 'sf::Int64' to 'int', possible loss of data
   VillagersSimulator.vcxproj -> D:\VisualProjects\VillagersSimulator\VillagersSimulator\Debug\VillagersSimulator.exe

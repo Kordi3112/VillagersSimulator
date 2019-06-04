@@ -131,11 +131,13 @@
     <ClCompile Include="ApiEvents.cpp" />
     <ClCompile Include="Coord.cpp" />
     <ClCompile Include="DialogWindow.cpp" />
+    <ClCompile Include="IzoMap.cpp" />
     <ClCompile Include="MainEngine.cpp" />
     <ClCompile Include="MapCreator.cpp" />
     <ClCompile Include="MathOperations.cpp" />
     <ClCompile Include="Mother.cpp" />
     <ClCompile Include="PerlinNoise.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TexturePack.cpp" />
@@ -149,11 +151,13 @@
     <ClInclude Include="ApiEvents.h" />
     <ClInclude Include="Coord.h" />
     <ClInclude Include="DialogWindow.h" />
+    <ClInclude Include="IzoMap.h" />
     <ClInclude Include="MainEngine.h" />
     <ClInclude Include="MapCreator.h" />
     <ClInclude Include="MathOperations.h" />
     <ClInclude Include="Mother.h" />
     <ClInclude Include="PerlinNoise.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TexturePack.h" />

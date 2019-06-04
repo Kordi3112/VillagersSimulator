@@ -5,16 +5,16 @@
 #include <time.h>
 #include <thread>
 #include "MainEngine.h"
-
+#include "Random.h"
 
 
 
 
 int main()
 {
-
 	
 	//JUNKS
+
 	sf::Vector2f cameraPos = sf::Vector2f(GetSystemMetrics(SM_CXSCREEN)/2.0f, GetSystemMetrics(SM_CYSCREEN) /2.0f);
 	int FPS = 0;
 	float g_zoom=1.f;
@@ -35,29 +35,33 @@ int main()
 
 	hMainEngine->setViewPort(sf::Rect<float>(0.1f, 0.1f, 0.8f, 0.5f));
 	///JUNK
-	TexturePack buttonTexturePack1;
-	buttonTexturePack1.loadNewTexture("noneclick", "../data/texturepacks/button1/noneclick.png");
-	buttonTexturePack1.loadNewTexture("onIt", "../data/texturepacks/button1/onIt.png");
-	buttonTexturePack1.loadNewTexture("click", "../data/texturepacks/button1/click.png");
-	//
-	ve::DialogWindowControler DialogWindowControler;
-	//
-	//
-	ve::ButtonsPanel ButtonsPanel;
-	ButtonsPanel.setMaximumClickedButtons(1);
-	//Button1
-	ve::CircleButton* CircleButton1 = new ve::CircleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),50,sf::Vector2f(1200,500));
-	ve::CircleButton* CircleButton2 = new ve::CircleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),50,sf::Vector2f(1200,350));
-	ve::CircleButton* CircleButton3 = new ve::CircleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),50,sf::Vector2f(1200,650));
-	ve::RectangleButton* RectangleButton1 = new ve::RectangleButton(buttonTexturePack1.getTexturePtr("noneclick"), buttonTexturePack1.getTexturePtr("onIt"), buttonTexturePack1.getTexturePtr("click"),sf::Vector2f(100,100),sf::Vector2f(1200,800));
+	MapCreator mapCreator;
+	mapCreator.init();
+	mapCreator.setEditAreaCameraPosition(cameraPos);
+	mapCreator.setEditAreaViewport(sf::Rect<float>(0.1, 0.1, 0.8, 0.8));
+	mapCreator.setEditAreaZoom(4.0f);
+	
+	IzoMap izoMap;
+	izoMap.create(800, 800);
+	izoMap.fillValue(0);
 
+	std::vector<sf::Vector2i> fields;
+	fields.push_back(sf::Vector2i(100, 100));
+	fields.push_back(sf::Vector2i(300, 300));
+	fields.push_back(sf::Vector2i(200, 500));
+	
+	std::vector<float> radius;
+	radius.push_back(100);
+	radius.push_back(150);
+	radius.push_back(100);
 
+	std::vector<float> shift;
+	shift.push_back(0.7f);
+	shift.push_back(0.5f);
+	shift.push_back(0.3f);
 
-	ButtonsPanel.addButton(CircleButton1);
-	ButtonsPanel.addButton(CircleButton2);
-	ButtonsPanel.addButton(CircleButton3);
-	ButtonsPanel.addButton(RectangleButton1);
-
+	//IzoMap::Tools::createHoles(&izoMap, fields, radius, shift);
+	IzoMap::Tools::gradientRegion(&izoMap, sf::IntRect(100, 100, 600, 600), sf::Vector2i(700, 700), sf::Vector2i(100, 100) , 0, 0.7);
 	//Thread
 	sf::Thread thread(&MainEngine::ThreadFunction, hMainEngine); //thread function is inside MainEngine class
 	thread.launch();
@@ -91,9 +95,6 @@ int main()
 			}
 		}
 		///--------------REFRESH COTROLERS
-
-		ButtonsPanel.checkStatus(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
-
 		//
 		int refreshTimeUs = frameTimeClock.getElapsedTime().asMicroseconds();
 		frameTimeClock.restart();
@@ -106,13 +107,13 @@ int main()
 
 		///
 		///---------RENDER
-		hWindow.clear();
+		hWindow.clear(sf::Color::Green);
 		//
 		hMainEngine->draw(hWindow);
-		terrain.renderChunks(hWindow, cameraPos, sf::Rect<float>(0.02f, 0.02f, 0.3f, 0.3f), g_zoom);
+		//terrain.renderChunks(hWindow, cameraPos, sf::Rect<float>(0.02f, 0.02f, 0.3f, 0.3f), g_zoom);
+		mapCreator.drawScene(hWindow);
+		//izoMap.draw(hWindow);
 		//
-
-		ButtonsPanel.draw(hWindow);
 		hWindow.display();
 		FPS++;
 		//

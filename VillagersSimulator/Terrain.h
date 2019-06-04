@@ -111,6 +111,17 @@ public:
 	//
 	float distanceToBlock(sf::Vector2f point, unsigned int chunkId, int x, int y);
 	float distanceToBlock2(sf::Vector2f point, unsigned int chunkId, int x, int y); //it returns distance*distance
+	//
+	sf::Vector2f getMapSizeInPx() const;
+	//
+	Block getBlock(int n,int x, int y) const;
+	bool setBlock(int n, int x, int y, Block material);
+	bool setBlock(sf::Vector2f blockPosition, int x, int y, Block material);
+	bool setBlock(int n, int x, int y, Block::BlockId id, int type, sf::Color blockColor);
+	void addChunk(Chunk* chunk);
+	//
+	//-1 means fail
+	int getChunkId(sf::Vector2f blockPosition);
 private:
 	std::vector<Chunk*> m_map;
 	//

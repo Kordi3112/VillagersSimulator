@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "IzoMap.h"
 #include "Terrain.h"
+//Buttons etc.
+#include "DialogWindow.h"
 
 //tool used to draw on map
 enum BrushShape
@@ -9,6 +12,7 @@ enum BrushShape
 	SQUARE_BRUSH
 };
 
+//
 class Brush
 {
 public:
@@ -24,11 +28,20 @@ public:
 	//
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition() const;
+	//
+	void setHardness(float level);
+	void draw();
+	//
+	void reset();
 private:
 	BrushShape m_brushShape;
 	float m_size;
+	//this parameter is responsible for density drawed land
+	float m_hardness = 1.0f; //is between 0 and 1
 	//position on screen
 	sf::Vector2f m_position;
+	//Block which is stick to the pen
+	Block m_blockPicked;
 
 };
 
@@ -41,7 +54,7 @@ public:
 	//
 	void drawScene(sf::RenderWindow& RenderWindow);
 	//
-	void Init();
+	void init();
 	//
 	void setEditAreaViewport(sf::Rect<float> Viewport);
 	void setEditAreaZoom(float Zoom);
@@ -53,19 +66,24 @@ public:
 	///Terrain generate stuff
 	void generateOcean(); //...and init chunks
 
+
 	///POST RENDERING
 	//making the map better looking
-	void postRenderOfTerrain();
+	void postTerrainRender();
 private:
 
+	//==//
+	void drawEditArea(sf::RenderWindow& RenderWindow);
+	//UI
+	void drawUI();
 	//EditArea...
 	sf::Rect<float> m_viewport;
 	float m_zoom;
 	sf::Vector2f m_cameraPosition;
 	//
 	Terrain* m_terrain;
-	//==//
-	void drawEditArea();
-	void drawInterface();
+	//BRUSH
+	Brush m_brush;
+	
 };
 

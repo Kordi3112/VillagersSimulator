@@ -102,6 +102,65 @@ float Terrain::distanceToBlock2(sf::Vector2f point, unsigned int chunkId, int x,
 	return (xBlockPos - point.x) * (xBlockPos - point.x) + (yBlockPos - point.y) * (yBlockPos - point.y);
 }
 
+sf::Vector2f Terrain::getMapSizeInPx() const
+{
+	return sf::Vector2f(MAP_X_SIZE * CHUNK_X_SIZE, MAP_Y_SIZE * CHUNK_Y_SIZE);
+
+}
+
+Block Terrain::getBlock(int n, int x, int y) const
+{
+	return Block();
+}
+
+bool Terrain::setBlock(int n, int x, int y, Block material)
+{
+	if (n < 0 or n >= m_map.size())return false;
+
+	return m_map[n]->setBlock(x, y, material);
+}
+
+bool Terrain::setBlock(sf::Vector2f blockPosition, int x, int y, Block material)
+{
+	if (blockPosition.x > getMapSizeInPx().x or blockPosition.y > getMapSizeInPx().y)
+		return false;//block outside the map
+
+	int n = 0;//witch index
+	int m = 0;//height index
+
+
+	n = round(blockPosition.x) / CHUNK_X_SIZE;
+	m = round(blockPosition.y) / CHUNK_Y_SIZE;
+
+
+
+}
+
+bool Terrain::setBlock(int n, int x, int y, Block::BlockId id, int type, sf::Color blockColor)
+{
+	if (n < 0 or n >= m_map.size())return false;
+
+	return m_map[n]->setBlock(x, y, id, type, blockColor);
+}
+
+void Terrain::addChunk(Chunk* chunk)
+{
+	m_map.push_back(chunk);
+}
+
+int Terrain::getChunkId(sf::Vector2f blockPosition)
+{
+	if (blockPosition.x > getMapSizeInPx().x or blockPosition.y > getMapSizeInPx().y)
+		return -1;//block outside the map
+
+	int n = 0;//witch index
+	int m = 0;//height index
+
+
+	n = round(blockPosition.x) / CHUNK_X_SIZE;
+	m = round(blockPosition.y) / CHUNK_Y_SIZE;
+}
+
 void Terrain::createSea(int seed)
 {
 	sf::Vector2f genChunkPos0 = sf::Vector2f((CHUNK_X_SIZE + 1) / 2.0f, (CHUNK_Y_SIZE + 1) / 2.0f);//position of first chunk

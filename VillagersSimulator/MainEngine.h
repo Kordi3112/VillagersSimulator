@@ -5,6 +5,7 @@
 #include "Terrain.h"
 #include "ApiEvents.h"
 #include "Resources.h"
+#include "MapCreator.h"
 
 
 struct GameSettings
