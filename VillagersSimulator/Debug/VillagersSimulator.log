@@ -1,22 +1,73 @@
-﻿  VillagersSimulator.cpp
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(66,26): warning C4244:  'argument': conversion from 'time_t' to 'int', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:             T=int
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         and
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:             T=int
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         and
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(98,21): warning C4244:  'initializing': conversion from 'sf::Int64' to 'int', possible loss of data
-  VillagersSimulator.vcxproj -> D:\VisualProjects\VillagersSimulator\VillagersSimulator\Debug\VillagersSimulator.exe
+﻿  Building.cpp
+  Child.cpp
+  ApiEvents.cpp
+  Coord.cpp
+  DialogWindow.cpp
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(62,60): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(519,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(527,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(552,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(560,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(569,22): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(644,19): warning C4018:  ">=": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(652,19): warning C4018:  ">=": niezgodność typu ze znakiem/bez znaku
+  MainEngine.cpp
+  MapCreator.cpp
+  MathOperations.cpp
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(661,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\MathOperations.cpp(55,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+  Mother.cpp
+  PerlinNoise.cpp
+  Resources.cpp
+  Terrain.cpp
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\MathOperations.cpp(67,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(32,29): warning C4018:  ">=": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(39,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,74): warning C4244:  "argument": konwersja z "T" do "unsigned int", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,74): warning C4244:         with
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,74): warning C4244:         [
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,74): warning C4244:             T=float
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,74): warning C4244:         ]
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,36): warning C4244:  "argument": konwersja z "T" do "unsigned int", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,36): warning C4244:         with
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,36): warning C4244:         [
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,36): warning C4244:             T=float
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(58,36): warning C4244:         ]
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(63,22): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(146,53): warning C4244:  "=": konwersja z "float" do "int", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(154,22): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+  TexturePack.cpp
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\Terrain.cpp(160,15): warning C4244:  "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\TexturePack.cpp(42,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\TexturePack.cpp(77,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\TexturePack.cpp(101,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+  Village.cpp
+  Villager.cpp
+  VillagersSimulator.cpp
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\TexturePack.cpp(154,20): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(66,26): warning C4244:  "argument": konwersja z "time_t" do "int", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:  "argument": konwersja z "T" do "T", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         with
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         [
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:             T=int
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         ]
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         and
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         [
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:             T=float
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,93): warning C4244:         ]
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:  "argument": konwersja z "T" do "T", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         with
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         [
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:             T=int
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         ]
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         and
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         [
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:             T=float
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(95,65): warning C4244:         ]
+  Generowanie kodu...
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(98,21): warning C4244:  "inicjowanie": konwersja z "sf::Int64" do "int", możliwa utrata danych
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(98,21): warning C4244: C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\TexturePack.cpp(121) : warning C4715: "TexturePack::changeName”: niewszystkie ścieżki kodu zwracają wartość
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(98,21): warning C4244: C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\TexturePack.cpp(150) : warning C4715: "TexturePack::deleteTexture”: niewszystkie ścieżki kodu zwracają wartość
+C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(98,21): warning C4244: C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\VillagersSimulator\TexturePack.cpp(138) : warning C4715: "TexturePack::deleteTexture”: niewszystkie ścieżki kodu zwracają wartość
+  LINK : nie znaleziono elementu C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\Debug\VillagersSimulator.exe ani nie został on skompilowany podczas ostatniego konsolidowania przyrostowego; zostanie wykonana pełna konsolidacja
+  VillagersSimulator.vcxproj -> C:\Users\Grzegorz\Documents\GitHub\VillagersSimulator\Debug\VillagersSimulator.exe
