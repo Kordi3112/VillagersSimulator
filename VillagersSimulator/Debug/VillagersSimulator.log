@@ -1,1 +1,19 @@
-﻿
+﻿  DialogWindow.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(62,60): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(560,20): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(566,20): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(640,19): warning C4018:  '>=': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(648,20): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(660,19): warning C4018:  '>=': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(679,20): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(786,21): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(791,21): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(796,21): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(816,21): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(821,21): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(826,21): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(852,20): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(858,20): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(863,20): warning C4018:  '<': signed/unsigned mismatch
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.cpp(919,38): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+  VillagersSimulator.vcxproj -> D:\VisualProjects\VillagersSimulator\VillagersSimulator\Debug\VillagersSimulator.exe

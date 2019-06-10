@@ -72,6 +72,7 @@ namespace ve
 		sf::Texture* getTexture3() const;
 		//
 		void setTextures(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3);
+		void setTextures(sf::Texture* texture);
 		//
 		void setClicked(bool isClicked); //manualy set if button is clicked
 		void click(); //starts click animation
@@ -86,20 +87,21 @@ namespace ve
 		void unlock();
 		//
 		void pressButton();
+		void setClickState(ClickState state);
+		bool m_isClicked = false;
 		/*
 		*/
 	protected:
 
-		void setClickState(ClickState state);
 		void setAnimationStage(ve::ClickAnimationStage stage);
 		//
 		sf::Vector2f m_position;
-		float m_rotation;	
+		float m_rotation;
 		//
-		bool m_isClicked = false;
+		//bool m_isClicked = false;
 		ClickState m_clickState;
 		//
-		sf::Texture* m_texture1= nullptr;
+		sf::Texture* m_texture1 = nullptr;
 		sf::Texture* m_texture2 = nullptr;
 		sf::Texture* m_texture3 = nullptr;
 		//
@@ -114,7 +116,7 @@ namespace ve
 	private:
 
 	};
-	 
+
 	//
 	//
 	//
@@ -192,40 +194,138 @@ namespace ve
 		unsigned getMaximumClickedButtons() const;
 		//
 		int addButton(ve::Button* button);//returns button id
+		int addButton(std::string name, ve::Button* button);//returns button id
 		//
 		ve::Button* getButtonPtr(int id);
+		ve::Button* getButtonPtr(std::string name);
 		//
 		bool isButtonClicked(int id);
 		//
 		void release(); //clean up buttons
 	private:
 		std::vector<Button*> m_container;
+		std::vector<std::string> m_names;
+		int m_lastClickedButtonId = -1;
 		//
 		unsigned m_maximumClickedButtons = 1;
 		std::vector<unsigned> m_clickedButtonsId;
 	};
 
-
-	///=////////////////////////////////////////////////////
-	//  DIALOGWINDOWS CONTROLER
-	///=///////////////////////////////////////////////////
-	
-	//controler for dialog windows
-	class DialogWindowControler
+	class Slider//
 	{
 	public:
-		DialogWindowControler();
-		~DialogWindowControler();
+		Slider();
+		~Slider();
 		//
-		void addElement(Button* dialogWindow);
-		void releaseAllElements();
+		//
+		void setBackgroundTexture(sf::Texture* texture);
+		//
+		sf::Texture* getBackgroundTexture() const;
+		//
+		void setSize(sf::Vector2f size);
+		sf::Vector2f getSize() const;
 		//
 		void draw(sf::RenderWindow& window);
 		//
-		Button* getButtonPtr(unsigned id);
+		void setSliderColor(sf::Color color);
+		void setSliderPointerColor(sf::Color color);
+		void setPosition(sf::Vector2f position);
+		void setValue(float value);
+		//
+		sf::Vector2f getPosition() const;
+		sf::Color getSliderColor() const;
+		sf::Color getSliderPointerColor() const;
+		//
+		float getValue() const;
+		//
+		void checkStatus(sf::Vector2f clikerPosition);
 	private:
-		std::vector<Button*> m_buttonContainer;
+		bool isMouseInPointerArea(sf::Vector2f clikerPosition);
+
+		sf::Texture* m_texture = nullptr;
+		sf::Color m_pointerColor;
+		sf::Color m_sliderColor;
+		sf::Vector2f m_size;//value
+		sf::Vector2f m_position;
+
+		float m_value = 0.5f;
+	};
+
+	class ButtonMenu
+	{
+	public:
+		ButtonMenu();
+		~ButtonMenu();
+		ButtonMenu(sf::Texture* texture, sf::Vector2f size);
+		void init();//automaticly when created
+		///INIT BUTTON
+		void initButton();
+		void setButtonTextures(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3);
+		void setButtonSize(sf::Vector2f size);
+		void setButtonPosition(sf::Vector2f position);
+		///SET
+		void setBackgroundTexture(sf::Texture* texture);
+		void setPosition(sf::Vector2f position);
+		void setSize(sf::Vector2f size);
+		///GET
+		bool isActive() const;
+		//
+		sf::Vector2f getButtonSize() const;
+		sf::Vector2f getButtonPosition() const;
+		//
+		sf::Vector2f getPosition() const;
+		sf::Vector2f getSize() const;
+		///DRAW
+		//
+		void draw(sf::RenderWindow& window);
+		///CHECK
+		void checkStatus(sf::Vector2f clickerPosition);
+		///ADD
+		void addComponent(ButtonsPanel* Panel);
+		void addComponent(Button* button);
+		void addComponent(Slider* slider);
+		///RELEASE
+		void releaseAllComponents();
+		void releaseInitButton();
+	private:
+		std::vector<ButtonsPanel*> m_containerPanel;
+		std::vector<Button*> m_containerButton;
+		std::vector<Slider*> m_containerSlider;
+		sf::Texture* m_backgroundTexture = nullptr;
+		sf::Vector2f m_size;
+		sf::Vector2f m_position;
+		//
+		bool m_isActive = false;
+		//
+		RectangleButton* m_initButton = nullptr;
 	};
 }
+
+///=////////////////////////////////////////////////////
+//  DIALOGWINDOWS CONTROLER
+///=///////////////////////////////////////////////////
+
+//controler for dialog windows
+/*
+class DialogWindowControler
+{
+public:
+	DialogWindowControler();
+	~DialogWindowControler();
+	//
+	void addElement(Button* dialogWindow);
+	void releaseAllElements();
+	//
+	void setPosition(sf::Vector2f position);
+	sf::Vector2f getPosition() const;
+	//
+	void draw(sf::RenderWindow& window);
+	//
+	Button* getButtonPtr(unsigned id);
+private:
+	std::vector<Button*> m_buttonContainer;
+};
+*/
+
 
 

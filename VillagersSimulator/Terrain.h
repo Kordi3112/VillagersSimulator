@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 //
+#include "Coord.h"
 #include "MathOperations.h"
 #include "PerlinNoise.h"
 
@@ -23,8 +24,11 @@ const sf::Color WATER_COLOR = sf::Color::Cyan;
 const sf::Color SEAWATER_COLOR = sf::Color::Blue;
 const sf::Color GRASS_COLOR = sf::Color::Green;
 const sf::Color SAND_COLOR = sf::Color::Yellow;
-const sf::Color TREE_COLOR = sf::Color::Red;  //its for a while
-const sf::Color ROCK1_COLOR = sf::Color::Black;  
+const sf::Color GRASSTREE_COLOR = sf::Color::Red;  //its for a while
+const sf::Color SNOWTREE_COLOR = sf::Color::Red;  //its for a while
+const sf::Color SNOW_COLOR = sf::Color::White;
+const sf::Color ROCK1_COLOR = sf::Color(82,82,82);  
+const sf::Color ROCK2_COLOR = sf::Color(127,127,127);  
 
 
 class Block
@@ -38,7 +42,10 @@ public:
 		ID_SEAWATER,
 		ID_GRASS,
 		ID_SAND,
-		ID_TREE,
+		ID_SNOW,
+		ID_SWAMP,
+		ID_GRASSTREE,
+		ID_SNOWTREE,
 		ID_ROCK1,
 		ID_ROCK2
 	};
@@ -80,14 +87,15 @@ public:
 	sf::Vector2f getCoords() const;
 	sf::Vector2f getGlobalBlockPosition(int x, int y) const;
 	//
-	bool isUnitary() const;
 	//
 	sf::Texture* getTexturePtr() const;
 	void createTexture();   //its many process demand function!
 private:
 	Block m_block[CHUNK_X_SIZE][CHUNK_Y_SIZE];
 	bool m_isUnitary = false; //if all block is chunk are the same, it will help for fast render
-	Block m_unitaryChunksBlockId;
+
+	bool m_changed = true;
+	
 	sf::Vector2f m_coords;
 	sf::Texture* m_texture;
 };
@@ -113,17 +121,25 @@ public:
 	float distanceToBlock2(sf::Vector2f point, unsigned int chunkId, int x, int y); //it returns distance*distance
 	//
 	sf::Vector2f getMapSizeInPx() const;
+	unsigned getChunksNumber() const;
+	sf::Vector2f getGlobalBlockPosition(int id, int x, int y) const;
 	//
 	Block getBlock(int n,int x, int y) const;
 	bool setBlock(int n, int x, int y, Block material);
 	bool setBlock(sf::Vector2f blockPosition, int x, int y, Block material);
 	bool setBlock(int n, int x, int y, Block::BlockId id, int type, sf::Color blockColor);
 	void addChunk(Chunk* chunk);
+	///TREES
+	void updateTreeCoords();
+	int getTreesNumber() const;
+	Coord getTreeCoord(int id) const;
+	///
 	//
 	//-1 means fail
 	int getChunkId(sf::Vector2f blockPosition);
 private:
 	std::vector<Chunk*> m_map;
+	std::vector<Coord> m_treeCoord;
 	//
 	//MAP GENERATION PROCESS
 	void createSea(int seed);

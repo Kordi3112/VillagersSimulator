@@ -4,6 +4,7 @@
 #include "Terrain.h"
 //Buttons etc.
 #include "DialogWindow.h"
+#include "Resources.h"
 
 //tool used to draw on map
 enum BrushShape
@@ -54,7 +55,9 @@ public:
 	//
 	void drawScene(sf::RenderWindow& RenderWindow);
 	//
-	void init();
+	void init(sf::RenderWindow& RenderWindow);
+	//
+	void setResourcesPtr(Resources* resources);
 	//
 	void setEditAreaViewport(sf::Rect<float> Viewport);
 	void setEditAreaZoom(float Zoom);
@@ -63,19 +66,41 @@ public:
 	sf::Rect<float> getEditAreaViewport() const;
 	float getEditAreaZoom() const;
 	sf::Vector2f getEditAreaCameraPosition() const;
+	//
+	void setMousePosition(sf::Vector2i position);
+	sf::Vector2i getMousePosition() const;
+	//
+	sf::Vector2f getMousePosRelativeToMap();
+	//
+	void refreshBrushPosRelativeToMap(sf::RenderWindow& window);
+	void refresh(unsigned deltaTime);
+	void refreshUI(sf::Vector2f clickerPosition);
+	///BRUSH
+	void setBrushSize(float size);
 	///Terrain generate stuff
 	void generateOcean(); //...and init chunks
 
-
+	bool m_mouseOnMap;
 	///POST RENDERING
 	//making the map better looking
 	void postTerrainRender();
 private:
 
 	//==//
-	void drawEditArea(sf::RenderWindow& RenderWindow);
-	//UI
-	void drawUI();
+	//
+	void drawBackground(sf::RenderWindow& window);
+	//
+	void drawEditArea(sf::RenderWindow& window);
+	///UI
+	void drawUI(sf::RenderWindow& window);
+	//
+	ve::ButtonMenu m_buttonMenu1;
+	///TEXTURES
+	Resources* m_pResources;
+	///
+	sf::Vector2i m_mousePos;
+	sf::Vector2f m_mousePosRelativeToMap;
+	
 	//EditArea...
 	sf::Rect<float> m_viewport;
 	float m_zoom;

@@ -56,7 +56,8 @@ void Terrain::renderChunks(sf::RenderWindow& window, sf::Vector2f cameraPosition
 {
 	sf::RenderTexture frameBuffer; //its bufor before drawing on the screen
 	frameBuffer.create(viewPort.width * window.getSize().x, viewPort.height * window.getSize().y);
-	
+	frameBuffer.clear();
+
 	const float chunkPxSize = zoom;//
 	const sf::Vector2f frameCenter = sf::Vector2f(frameBuffer.getSize().x / 2.0f, frameBuffer.getSize().y / 2.0f);
 
@@ -68,10 +69,12 @@ void Terrain::renderChunks(sf::RenderWindow& window, sf::Vector2f cameraPosition
 		//	
 		sf::Sprite sprite;
 		sprite.setTexture(*this->m_map[id]->getTexturePtr());
+
 		sprite.setPosition((this->m_map[id]->getCoords()- cameraPosition) * chunkPxSize + frameCenter);
 		
 		sprite.setOrigin(sf::Vector2f((CHUNK_X_SIZE + 1) / 2, (CHUNK_Y_SIZE + 1) / 2));
 		sprite.setScale(zoom, zoom);
+
 		frameBuffer.draw(sprite);
 	}
 	//
@@ -108,9 +111,27 @@ sf::Vector2f Terrain::getMapSizeInPx() const
 
 }
 
+unsigned Terrain::getChunksNumber() const
+{
+	return m_map.size();
+}
+
+sf::Vector2f Terrain::getGlobalBlockPosition(int id, int x, int y) const
+{
+	if (id < 0 or id >= m_map.size())
+		return sf::Vector2f();
+
+	else return m_map[id]->getGlobalBlockPosition(x, y);
+
+	
+}
+
 Block Terrain::getBlock(int n, int x, int y) const
 {
-	return Block();
+	if (n < 0 or n >= m_map.size())
+		return Block();
+
+	return m_map[n]->getBlock(x, y);
 }
 
 bool Terrain::setBlock(int n, int x, int y, Block material)
@@ -148,6 +169,19 @@ void Terrain::addChunk(Chunk* chunk)
 	m_map.push_back(chunk);
 }
 
+int Terrain::getTreesNumber() const
+{
+	return m_treeCoord.size();
+}
+
+Coord Terrain::getTreeCoord(int id) const
+{
+	if (id < 0 || id >= m_treeCoord.size())
+		return Coord();
+
+	else return m_treeCoord[id];
+}
+
 int Terrain::getChunkId(sf::Vector2f blockPosition)
 {
 	if (blockPosition.x > getMapSizeInPx().x or blockPosition.y > getMapSizeInPx().y)
@@ -159,6 +193,8 @@ int Terrain::getChunkId(sf::Vector2f blockPosition)
 
 	n = round(blockPosition.x) / CHUNK_X_SIZE;
 	m = round(blockPosition.y) / CHUNK_Y_SIZE;
+
+	return m * MAP_X_SIZE / CHUNK_X_SIZE + n;
 }
 
 void Terrain::createSea(int seed)
@@ -317,7 +353,7 @@ void Chunk::fill(Block material)
 		}
 	}
 
-	this->m_isUnitary = true;
+	m_changed = true;
 }
 
 Block Chunk::getBlock(int x, int y) const
@@ -334,7 +370,7 @@ bool Chunk::setBlock(int x, int y, Block material)
 
 	this->m_block[x][y] = material;
 
-	this->m_isUnitary = false;
+	m_changed = true;
 
 	return true;
 }
@@ -345,7 +381,7 @@ bool Chunk::setBlock(int x, int y, Block::BlockId id, int type, sf::Color blockC
 
 	this->m_block[x][y] = Block(id, type, blockColor);
 
-	this->m_isUnitary = false;
+	m_changed = true;
 
 	return true;
 }
@@ -371,11 +407,6 @@ sf::Vector2f Chunk::getGlobalBlockPosition(int x, int y) const
 	return sf::Vector2f(this->getCoords().x + x - middle.x, this->getCoords().y + y - middle.y);
 }
 
-bool Chunk::isUnitary() const
-{
-	//return this->m_isUnitary;
-	return false;
-}
 
 
 sf::Texture* Chunk::getTexturePtr() const
@@ -385,6 +416,9 @@ sf::Texture* Chunk::getTexturePtr() const
 
 void Chunk::createTexture()
 {
+
+	if (!m_changed)return; //its not neccesary to update if chunks has no changes
+
 	delete this->m_texture; //destroy previous texture
 
 	this->m_texture = new sf::Texture(); //create new Texture
@@ -392,21 +426,20 @@ void Chunk::createTexture()
 
 	sf::Image image;
 
-	if (this->isUnitary())
-		image.create(CHUNK_X_SIZE, CHUNK_Y_SIZE, Block::getBlockColor(Block::ID_GRASS)); //TODO: change getBlockColor(ID_GRASS)
-	else
+
+	image.create(CHUNK_X_SIZE, CHUNK_Y_SIZE, Block::getBlockColor(Block::ID_NOTHING));
+	for (int x = 0; x < CHUNK_X_SIZE; x++)
 	{
-		image.create(CHUNK_X_SIZE, CHUNK_Y_SIZE, Block::getBlockColor(Block::ID_NOTHING));
-		for (int x = 0; x < CHUNK_X_SIZE; x++)
+		for (int y = 0; y < CHUNK_Y_SIZE; y++)
 		{
-			for (int y = 0; y < CHUNK_Y_SIZE; y++)
-			{
-				image.setPixel(x, y, this->m_block[x][y].color);
-			}
+			image.setPixel(x, y, this->m_block[x][y].color);
 		}
 	}
+	
 
 	this->m_texture->loadFromImage(image);
+
+	m_changed = false;
 }
 
 Block::Block()
@@ -445,7 +478,8 @@ sf::Color Block::getBlockColor(BlockId blockId)
 	else if (blockId == ID_SEAWATER)return SEAWATER_COLOR;
 	else if (blockId == ID_GRASS)return GRASS_COLOR;
 	else if (blockId == ID_SAND)return SAND_COLOR;
-	else if (blockId == ID_TREE)return TREE_COLOR;
+	else if (blockId == ID_GRASSTREE)return GRASSTREE_COLOR;
+	else if (blockId == ID_SNOWTREE)return SNOWTREE_COLOR;
 	else if (blockId == ID_ROCK1)return ROCK1_COLOR;
 	else return sf::Color();
 }

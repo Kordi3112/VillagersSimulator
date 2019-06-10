@@ -47,8 +47,7 @@ void MainEngine::ThreadFunction()
 {
 	for (;;)
 	{
-		sf::sleep(sf::milliseconds(1000));
-		//std::cout << "thread" << std::endl;
+		sf::sleep(sf::seconds(1));
 	}
 	
 }
@@ -70,13 +69,36 @@ void MainEngine::loadResources()
 	this->m_resources.load();
 }
 
+Resources* MainEngine::getResourcesPtr()
+{
+	return &m_resources;
+}
+
 void MainEngine::drawInterface(sf::RenderWindow& window)
 {
 }
 
 void MainEngine::drawGameFrame(sf::RenderWindow& window)
 {
+	///MAP
+	m_hTerain->renderChunks(window, getCameraPosition(), getViewPort(), getZoom());
+	///OBJECTS
+	//rendering objects from the most behind to the most forward
 
+	//trees
+	sf::Sprite treeSprite;
+	
+	//treeSprite.setTexture(m_resources.); //TODO: LOAD TEXTURE
+	treeSprite.setOrigin(sf::Vector2f());//origin is at the bot side at the middle
+	treeSprite.setScale(sf::Vector2f());
+
+	for (int i = 0; i < m_hTerain->getTreesNumber(); i++)
+	{
+		//changing positions
+
+	//	sf::Vector2f 
+		//treeSprite.setTexture();
+	}
 }
 
 void MainEngine::drawMapCreatorStage(sf::RenderWindow& window)

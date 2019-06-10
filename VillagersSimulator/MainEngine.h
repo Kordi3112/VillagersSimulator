@@ -57,6 +57,10 @@ public:
 	void draw(sf::RenderWindow& window);
 	//
 	void loadResources();
+	Resources* getResourcesPtr();
+	//
+	MapCreator m_mapCreator;
+	sf::RenderWindow* m_pRenderWindow;
 private:
 
 	sf::Vector2f m_cameraPosition;
@@ -71,8 +75,6 @@ private:
 	//==//
 	void drawMapCreatorStage(sf::RenderWindow& window);
 	//
-	void drawMapCreatorEditArea(sf::RenderWindow& window, sf::Vector2f cameraPosition, sf::Rect<float> viewPort, float zoom);//for map editor
-	void drawMapCreatorInterface();
 	//==//
 	void drawLoadingScreenStage(sf::RenderWindow& window, sf::Rect<float> viewPort);
 
@@ -85,7 +87,6 @@ private:
 	GameSettings m_gameSettings;
 	GameStates m_gameStates;
 	//
-	ve::DialogWindowControler m_dialogWindowControler;//class to distribute buttons at current scene;
 	//
 	Resources m_resources;
 };

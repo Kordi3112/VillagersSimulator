@@ -42,6 +42,7 @@ public:
 		//
 
 	};
+	///
 	void release();
 private:
 	//Array for values

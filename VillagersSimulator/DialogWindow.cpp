@@ -38,10 +38,10 @@ ve::ButtonType ve::CircleButton::type() const
 
 void ve::Button::checkButtonStatus(sf::Vector2f clickerPosition)
 {
-	
+
 	if (this->m_clickAnimation == true)
 	{
-	
+
 
 		if (this->m_clock.getElapsedTime().asMilliseconds() < this->m_animationClickTime * 0.33f)
 		{
@@ -51,7 +51,7 @@ void ve::Button::checkButtonStatus(sf::Vector2f clickerPosition)
 			else this->setAnimationStage(ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK1);
 			return;
 		}
-		else if(this->m_clock.getElapsedTime().asMilliseconds() < this->m_animationClickTime * 0.66f)
+		else if (this->m_clock.getElapsedTime().asMilliseconds() < this->m_animationClickTime * 0.66f)
 		{
 			//second...
 			if (this->getClickState() == ve::ClickState::CLICKED)
@@ -78,11 +78,11 @@ void ve::Button::checkButtonStatus(sf::Vector2f clickerPosition)
 				this->unlock();
 			}
 			else
-			if ((this->m_additionalParameters & ve::PERMALOCK_WHEN_CLICKED) or (this->m_additionalParameters & ve::LOCK_WHEN_CLICKED))
-			{
-				this->m_clickState = ve::ClickState::CLICKED;
-				this->lock();
-			}
+				if ((this->m_additionalParameters & ve::PERMALOCK_WHEN_CLICKED) or (this->m_additionalParameters & ve::LOCK_WHEN_CLICKED))
+				{
+					this->m_clickState = ve::ClickState::CLICKED;
+					this->lock();
+				}
 		}
 	}
 
@@ -102,12 +102,12 @@ void ve::Button::checkButtonStatus(sf::Vector2f clickerPosition)
 		{
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 			{
-		
+
 				if (this->m_isLocked)
 				{
 					if (this->m_additionalParameters & PERMALOCK_WHEN_CLICKED)return;
 					else if (this->m_additionalParameters & LOCK_WHEN_CLICKED)
-					{				
+					{
 						this->unclick();
 					}
 					else return;
@@ -119,7 +119,7 @@ void ve::Button::checkButtonStatus(sf::Vector2f clickerPosition)
 			{
 				if (this->m_isLocked)return;
 				else this->setClickState(ve::ClickState::MOUSE_ON_OBJECT);
-			} 
+			}
 		}
 
 	}
@@ -156,6 +156,7 @@ void ve::CircleButton::draw(sf::RenderWindow& window)
 		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK2)
 		{
 			circleShape.setTexture(this->getTexture3());
+			//circleShape.setScale(1.04f, 1.04f);
 		}
 		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_CLICK3)
 		{
@@ -165,11 +166,12 @@ void ve::CircleButton::draw(sf::RenderWindow& window)
 		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK1)
 		{
 			circleShape.setTexture(this->getTexture1());
-			circleShape.setScale(1.04f, 1.04f);
+			//circleShape.setScale(2.04f, 2.04f);
 		}
 		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK2)
 		{
 			circleShape.setTexture(this->getTexture1());
+			circleShape.setScale(1.04f, 1.04f);
 		}
 		else if (this->getAnimationStage() == ve::ClickAnimationStage::ANIMATIONSTAGE_UNCLICK3)
 		{
@@ -189,6 +191,7 @@ void ve::CircleButton::draw(sf::RenderWindow& window)
 		case ve::ClickState::MOUSE_ON_OBJECT:
 		{
 			circleShape.setTexture(this->getTexture2());
+			circleShape.setScale(1.54f, 1.54f);
 			break;
 		}
 		case ve::ClickState::CLICKED:
@@ -199,9 +202,9 @@ void ve::CircleButton::draw(sf::RenderWindow& window)
 		}
 	}
 	//
-	
 
-	
+
+
 	///TEXT
 	//TODO:
 
@@ -276,6 +279,11 @@ void ve::Button::setTextures(sf::Texture* texture1, sf::Texture* texture2, sf::T
 	this->setTexture1(texture1);
 	this->setTexture2(texture2);
 	this->setTexture3(texture3);
+}
+
+void ve::Button::setTextures(sf::Texture* texture)
+{
+	setTextures(texture, texture, texture);
 }
 
 void ve::Button::setClicked(bool isClicked)
@@ -424,7 +432,7 @@ void ve::RectangleButton::draw(sf::RenderWindow& window)
 	sf::RectangleShape rectangleShape;
 	rectangleShape.setSize(this->getSize());
 	rectangleShape.setPosition(this->getPosition());
-	rectangleShape.setOrigin(this->getSize()/2.0f);
+	rectangleShape.setOrigin(this->getSize() / 2.0f);
 
 	//
 	if (this->m_clickAnimation)
@@ -491,7 +499,7 @@ void ve::RectangleButton::draw(sf::RenderWindow& window)
 
 void ve::RectangleButton::setSize(sf::Vector2f size)
 {
-	this->m_size = size; 
+	this->m_size = size;
 }
 
 sf::Vector2f ve::RectangleButton::getSize() const
@@ -500,7 +508,7 @@ sf::Vector2f ve::RectangleButton::getSize() const
 }
 
 
-
+/*
 ve::DialogWindowControler::DialogWindowControler()
 {
 }
@@ -537,7 +545,7 @@ ve::Button* ve::DialogWindowControler::getButtonPtr(unsigned id)
 
 	else return nullptr;
 }
-
+*/
 ve::ButtonsPanel::ButtonsPanel()
 {
 }
@@ -555,71 +563,42 @@ void ve::ButtonsPanel::draw(sf::RenderWindow& window)
 
 void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 {
-	
-	//checkStatus to all buttons
-	for (int i = 0; i < this->m_container.size(); i++)
+	for (int i = 0; i < m_container.size(); i++)
 	{
-		this->m_container[i]->checkButtonStatus(clickerPosition);
-		//check if number of maximum clicked buttons is correct
-		if (this->m_container[i]->getClickState() == ve::ClickState::CLICKED)
+		//for each button check status
+		m_container[i]->checkButtonStatus(clickerPosition);
+
+		/*
+		if (m_container[i]->getClickState() == ve::ClickState::CLICKED)
 		{
-			//check if button is already notices as clicked button
-			bool isOnList = false;
-
-			for (int j = 0; j < this->m_clickedButtonsId.size(); j++)
-			{
-				if (this->m_clickedButtonsId[j] == i)isOnList = true;
-			}
-
-			if (isOnList)
+			if (m_lastClickedButtonId == i)
 			{
 				//everything is good
-				this->m_container[i]->lock();
 			}
 			else
 			{
-				//check if there is space for next button to clicked list
-				if (this->m_clickedButtonsId.size() >= this->getMaximumClickedButtons())
+				//turn off other buttons
+				for (int j = 0; j < m_container.size(); j++)
 				{
-					//there is no space
-					//make space for new button
-					if (this->m_clickedButtonsId.size() == 1)
-					{
-						this->m_clickedButtonsId[0] = i;
-					}
-					else
-					{
-						for (int j = this->m_clickedButtonsId.size() - 1; j > 0; j++)
-						{
-
-						}
-					}
-
-				
-				}
-				else
-				{
-					//add new button to list
-					this->m_clickedButtonsId.push_back(i);
-					continue;
+					if (i == j)continue;
+					m_container[i]->setClickState(ve::ClickState::NONE_CLICK);
 				}
 			}
+
+			//firts call
+			if (m_lastClickedButtonId == -1)
+			{
+				m_lastClickedButtonId = i;
+			}
 		}
-	}
-	/*
-	//
-	//checkStatus to all buttons
-	for (int i = 0; i < this->m_container.size(); i++)
-	{
-		this->m_container[i]->checkButtonStatus(clickerPosition);
+		*/
 		
 	}
-	*/
 }
 
-void ve::ButtonsPanel::setMaximumClickedButtons(unsigned val)
+void ve::ButtonsPanel::setMaximumClickedButtons(unsigned var)
 {
-	this->m_maximumClickedButtons = val;
+	this->m_maximumClickedButtons = var;
 }
 
 unsigned ve::ButtonsPanel::getMaximumClickedButtons() const
@@ -633,9 +612,26 @@ int ve::ButtonsPanel::addButton(ve::Button* button)
 		return -1;
 
 	button->setAdditionalParameters(ve::LOCK_WHEN_CLICKED);
-	this->m_container.push_back(button);
+	button->setClickState(ve::ClickState::NONE_CLICK);
 
-	return this->m_container.size() - 1;
+	m_container.push_back(button);
+	m_names.push_back("unnamed");
+
+	return m_container.size() - 1;
+}
+
+int ve::ButtonsPanel::addButton(std::string name, ve::Button* button)
+{
+	if (button == nullptr)
+		return -1;
+
+	button->setAdditionalParameters(ve::LOCK_WHEN_CLICKED);
+	button->setClickState(ve::ClickState::NONE_CLICK);
+
+	m_container.push_back(button);
+	m_names.push_back(name);
+
+	return m_container.size() - 1;
 }
 
 
@@ -647,6 +643,18 @@ ve::Button* ve::ButtonsPanel::getButtonPtr(int id)
 	return this->m_container[id];
 }
 
+ve::Button* ve::ButtonsPanel::getButtonPtr(std::string name)
+{
+	for (int i = 0; i < m_names.size(); i++)
+	{
+		if (name == m_names[i])
+			return m_container[i];
+		
+	}
+
+	return nullptr;
+}
+
 bool ve::ButtonsPanel::isButtonClicked(int id)
 {
 	if (id < 0 or id >= this->m_container.size())
@@ -655,15 +663,329 @@ bool ve::ButtonsPanel::isButtonClicked(int id)
 	if (this->m_container[id]->getClickState() == ve::ClickState::CLICKED)return true;
 	else return false;
 }
+/*
+bool ve::ButtonsPanel::isButtonUnclicked(int id)
+{
+	if (id < 0 or id >= this->m_container.size())
+		return false;
+
+	if (this->m_container[id]->getClickState() == ve::ClickState::CLICKED)return false;
+	else return true;
+}
+*/
 
 void ve::ButtonsPanel::release()
 {
 	for (int i = 0; i < this->m_container.size(); i++)
 	{
-		if(this->m_container[i]!=nullptr)
-		delete this->m_container[i];
+		if (this->m_container[i] != nullptr)
+			delete this->m_container[i];
 	}
 
 	this->m_container.clear();
 
+}
+
+ve::ButtonMenu::ButtonMenu()
+{
+}
+ve::ButtonMenu::~ButtonMenu()
+{
+}
+ve::ButtonMenu::ButtonMenu(sf::Texture* texture, sf::Vector2f size)
+{
+}
+
+void ve::ButtonMenu::initButton()
+{
+	if (m_initButton == nullptr)
+	{
+		m_initButton = new RectangleButton();
+		m_initButton->setAdditionalParameters(LOCK_WHEN_CLICKED);
+		
+	}
+	
+}
+
+void ve::ButtonMenu::setButtonTextures(sf::Texture* texture1, sf::Texture* texture2, sf::Texture* texture3)
+{
+	m_initButton->setTextures(texture1,texture2, texture3);
+
+}
+
+void ve::ButtonMenu::setButtonSize(sf::Vector2f size)
+{
+	m_initButton->setSize(size);
+}
+
+void ve::ButtonMenu::setButtonPosition(sf::Vector2f position)
+{
+	m_initButton->setPosition(position);
+}
+
+void ve::ButtonMenu::setBackgroundTexture(sf::Texture* texture)
+{
+	m_backgroundTexture = texture;
+}
+
+void ve::ButtonMenu::setPosition(sf::Vector2f position)
+{
+	m_position = position;
+}
+
+void ve::ButtonMenu::setSize(sf::Vector2f size)
+{
+	m_size = size;
+}
+
+bool ve::ButtonMenu::isActive() const
+{
+	return m_isActive;
+}
+
+sf::Vector2f ve::ButtonMenu::getButtonSize() const
+{
+	return m_initButton->getSize();
+}
+
+sf::Vector2f ve::ButtonMenu::getButtonPosition() const
+{
+	return m_initButton->getPosition();
+}
+
+sf::Vector2f ve::ButtonMenu::getPosition() const
+{
+	return m_position;
+}
+
+sf::Vector2f ve::ButtonMenu::getSize() const
+{
+	return m_size;
+}
+
+
+
+
+void ve::ButtonMenu::draw(sf::RenderWindow& window)
+{
+	//INIT BUTTON
+	m_initButton->draw(window);
+
+	if (isActive())
+	{
+		//BACKGROUND
+		sf::RectangleShape background;
+		background.setTexture(m_backgroundTexture);
+		background.setSize(m_size);
+		background.setPosition(m_position);
+		background.setOrigin(background.getSize().x / 2.0f, background.getSize().y / 2.0f);
+
+		window.draw(background);
+		
+		//BUTTONS
+		for (int i = 0; i < m_containerButton.size(); i++)
+		{
+			m_containerButton[i]->draw(window);
+		}
+		//PANELS
+		for (int i = 0; i < m_containerPanel.size(); i++)
+		{
+			m_containerPanel[i]->draw(window);
+		}
+		//SLIDER
+		for (int i = 0; i < m_containerSlider.size(); i++)
+		{
+			m_containerSlider[i]->draw(window);
+		}
+	}
+	
+}
+
+void ve::ButtonMenu::checkStatus(sf::Vector2f clickerPosition)
+{
+	m_initButton->checkButtonStatus(clickerPosition);
+	//
+	if (m_initButton->getClickState() == ve::ClickState::CLICKED)
+		m_isActive = true;
+	else m_isActive = false;
+	///CHECK COMPONENTS STATUS
+
+	if (isActive())
+	{
+		//BUTTONS
+		for (int i = 0; i < m_containerButton.size(); i++)
+		{
+			m_containerButton[i]->checkButtonStatus(clickerPosition);
+		}
+		//PANELS
+		for (int i = 0; i < m_containerPanel.size(); i++)
+		{
+			m_containerPanel[i]->checkStatus(clickerPosition);
+		}
+		//SLIDER
+		for (int i = 0; i < m_containerSlider.size(); i++)
+		{
+			m_containerSlider[i]->checkStatus(clickerPosition);
+		}
+	}
+	
+}
+
+void ve::ButtonMenu::addComponent(ButtonsPanel* Panel)
+{
+	m_containerPanel.push_back(Panel);
+}
+
+void ve::ButtonMenu::addComponent(Button* button)
+{
+	m_containerButton.push_back(button);
+}
+
+void ve::ButtonMenu::addComponent(Slider* slider)
+{
+	m_containerSlider.push_back(slider);
+}
+
+void ve::ButtonMenu::releaseAllComponents()
+{
+	//PANELS
+	for (int i = 0; i < m_containerPanel.size(); i++)
+	{
+		m_containerPanel[i]->release();
+		delete m_containerPanel[i];
+	}
+	//BUTTONS
+	for (int i = 0; i < m_containerButton.size(); i++)
+	{
+		delete m_containerButton[i];
+	}
+	//SLIDERS
+	for (int i = 0; i < m_containerSlider.size(); i++)
+	{
+		delete m_containerSlider[i];
+	}
+}
+
+void ve::ButtonMenu::releaseInitButton()
+{
+	delete m_initButton;
+}
+
+ve::Slider::Slider()
+{
+}
+
+ve::Slider::~Slider()
+{
+}
+
+void ve::Slider::setBackgroundTexture(sf::Texture* texture)
+{
+	this->m_texture = texture;
+}
+
+sf::Texture* ve::Slider::getBackgroundTexture() const
+{
+	return this->m_texture;
+}
+
+void ve::Slider::setSize(sf::Vector2f size)
+{
+	this->m_size = size;
+}
+
+void ve::Slider::draw(sf::RenderWindow& window)
+{
+
+	sf::RectangleShape begin;
+	begin.setPosition(getPosition().x - 0.475f * getSize().x, getPosition().y);
+	begin.setSize(sf::Vector2f(getSize().x * 0.05f, getSize().y));
+	begin.setFillColor(this->getSliderColor());
+	begin.setOrigin(begin.getSize().x / 2.0f, begin.getSize().y / 2.0f);
+	//
+	sf::RectangleShape slider;
+	slider.setPosition(getPosition());
+	slider.setSize(sf::Vector2f(getSize().x * 0.9f, getSize().y * 0.25f));
+	slider.setFillColor(this->getSliderColor());
+	slider.setOrigin(slider.getSize().x / 2.0f, slider.getSize().y / 2.0f);
+	//
+	sf::RectangleShape end;
+	end.setPosition(getPosition().x + 0.475f * getSize().x, getPosition().y);
+	end.setSize(sf::Vector2f(getSize().x * 0.05f, getSize().y));
+	end.setFillColor(this->getSliderColor());
+	end.setOrigin(end.getSize().x / 2.0f, end.getSize().y / 2.0f);
+	//
+	sf::RectangleShape pointer;
+	pointer.setPosition(getPosition().x + (m_value - 0.5) * 0.8 * getSize().x, getPosition().y);
+	pointer.setSize(sf::Vector2f(getSize().x * 0.1f, getSize().y));
+	pointer.setFillColor(this->getSliderPointerColor());
+	pointer.setOrigin(pointer.getSize().x / 2.0f, pointer.getSize().y / 2.0f);
+	///SHOW
+	window.draw(begin);
+	window.draw(end);
+	window.draw(slider);
+	window.draw(pointer);
+
+}
+
+void ve::Slider::setSliderColor(sf::Color color)
+{
+	m_sliderColor = color;
+}
+void ve::Slider::setSliderPointerColor(sf::Color color)
+{
+	m_pointerColor = color;
+}
+void ve::Slider::setPosition(sf::Vector2f position)
+{
+	m_position = position;
+}
+
+void ve::Slider::setValue(float value)
+{
+	if (value > 1.0f)value = 1.0f;
+	if (value < 0.0f)value = 0.0f;
+
+	m_value = value;
+}
+
+sf::Vector2f ve::Slider::getPosition() const
+{
+	return m_position;
+}
+
+sf::Color ve::Slider::getSliderColor() const
+{
+	return m_sliderColor;
+}
+sf::Color ve::Slider::getSliderPointerColor() const
+{
+	return m_pointerColor;
+}
+float ve::Slider::getValue() const
+{
+	return m_value;
+}
+void ve::Slider::checkStatus(sf::Vector2f clikerPosition)
+{
+	if (isMouseInPointerArea(clikerPosition)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+			if ((clikerPosition.x >= getPosition().x - 0.40f * getSize().x) && (clikerPosition.x <= getPosition().x + 0.40f * getSize().x))
+			{
+				this->m_value = (clikerPosition.x - getPosition().x + 0.40f * getSize().x) * 1.25f / getSize().x;
+				if (m_value > 1) m_value = 1;
+				if (m_value < 0) m_value = 0;
+			}
+		}
+	}
+
+}
+sf::Vector2f ve::Slider::getSize() const
+{
+	return m_size;
+}
+bool ve::Slider::isMouseInPointerArea(sf::Vector2f clickerPosition)
+{
+	if ((clickerPosition.x <= getPosition().x + ((m_value - 0.5f) * 0.8f + 0.05f) * getSize().x) && (clickerPosition.x >= getPosition().x + ((m_value - 0.5f) * 0.8f - 0.05f) * getSize().x) && (clickerPosition.y >= getPosition().y - 0.5f * getSize().y) && (clickerPosition.y <= getPosition().y + 0.5f * getSize().y)) return true;
+	else return false;
 }

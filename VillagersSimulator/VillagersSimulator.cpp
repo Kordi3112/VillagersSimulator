@@ -15,9 +15,9 @@ int main()
 	
 	//JUNKS
 
-	sf::Vector2f cameraPos = sf::Vector2f(GetSystemMetrics(SM_CXSCREEN)/2.0f, GetSystemMetrics(SM_CYSCREEN) /2.0f);
+	sf::Vector2f cameraPos = sf::Vector2f(500,500);
 	int FPS = 0;
-	float g_zoom=1.f;
+	float g_zoom=2.f;
 	sf::Clock minute;
 	//
 	///----CLOCKS
@@ -27,41 +27,41 @@ int main()
 	//setting antialising to 8
 	contextSettings.antialiasingLevel = 8;
 	//creating window
-	//sf::RenderWindow hWindow(sf::VideoMode(1080, 720, 32), "VillagersSimulator", sf::Style::Default, contextSettings);
 	sf::RenderWindow hWindow(sf::VideoMode(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), 32), "VillagersSimulator", sf::Style::Fullscreen, contextSettings);
 
-	//MainEngine Init
+	///MainEngine Init
 	MainEngine* hMainEngine = new MainEngine();//handle to MainEngine 
 
 	hMainEngine->setViewPort(sf::Rect<float>(0.1f, 0.1f, 0.8f, 0.5f));
+	hMainEngine->loadResources();
+	//RESOURCES
+
 	///JUNK
-	MapCreator mapCreator;
-	mapCreator.init();
-	mapCreator.setEditAreaCameraPosition(cameraPos);
-	mapCreator.setEditAreaViewport(sf::Rect<float>(0.1, 0.1, 0.8, 0.8));
-	mapCreator.setEditAreaZoom(4.0f);
+	TexturePack texturePack;
+	texturePack.loadNewTexture("1", "../data/texturepacks/button1/noneclick.png");
+	texturePack.loadNewTexture("2", "../data/texturepacks/button1/onIt.png");
+	texturePack.loadNewTexture("3", "../data/texturepacks/button1/click.png");
 	
-	IzoMap izoMap;
-	izoMap.create(800, 800);
-	izoMap.fillValue(0);
+	TexturePack menuBackground;
+	menuBackground.loadNewTexture("1", "../data/texturepacks/buttonMenu/buttonMenu1.png");
 
-	std::vector<sf::Vector2i> fields;
-	fields.push_back(sf::Vector2i(100, 100));
-	fields.push_back(sf::Vector2i(300, 300));
-	fields.push_back(sf::Vector2i(200, 500));
 	
-	std::vector<float> radius;
-	radius.push_back(100);
-	radius.push_back(150);
-	radius.push_back(100);
+	
+	hMainEngine->m_mapCreator;
+	hMainEngine->m_mapCreator.setResourcesPtr(hMainEngine->getResourcesPtr());
+	hMainEngine->m_mapCreator.init(hWindow);
 
-	std::vector<float> shift;
-	shift.push_back(0.7f);
-	shift.push_back(0.5f);
-	shift.push_back(0.3f);
+	hMainEngine->m_mapCreator.setEditAreaCameraPosition(cameraPos);
+	hMainEngine->m_mapCreator.setEditAreaViewport(sf::Rect<float>(0.1, 0.1, 0.8, 0.8));
+	hMainEngine->m_mapCreator.setEditAreaZoom(g_zoom);
+	
+
+
+	hMainEngine->m_pRenderWindow = &hWindow;
+	//
+
 
 	//IzoMap::Tools::createHoles(&izoMap, fields, radius, shift);
-	IzoMap::Tools::gradientRegion(&izoMap, sf::IntRect(100, 100, 600, 600), sf::Vector2i(700, 700), sf::Vector2i(100, 100) , 0, 0.7);
 	//Thread
 	sf::Thread thread(&MainEngine::ThreadFunction, hMainEngine); //thread function is inside MainEngine class
 	thread.launch();
@@ -95,6 +95,9 @@ int main()
 			}
 		}
 		///--------------REFRESH COTROLERS
+		hMainEngine->m_mapCreator.setEditAreaCameraPosition(cameraPos);
+		hMainEngine->m_mapCreator.refreshUI(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
+
 		//
 		int refreshTimeUs = frameTimeClock.getElapsedTime().asMicroseconds();
 		frameTimeClock.restart();
@@ -108,11 +111,15 @@ int main()
 		///
 		///---------RENDER
 		hWindow.clear(sf::Color::Green);
+
 		//
-		hMainEngine->draw(hWindow);
-		//terrain.renderChunks(hWindow, cameraPos, sf::Rect<float>(0.02f, 0.02f, 0.3f, 0.3f), g_zoom);
-		mapCreator.drawScene(hWindow);
-		//izoMap.draw(hWindow);
+		hMainEngine->m_mapCreator.setBrushSize(5);
+		hMainEngine->m_mapCreator.setEditAreaZoom(g_zoom);
+		//hMainEngine->draw(hWindow);
+		hMainEngine->m_mapCreator.refreshBrushPosRelativeToMap(hWindow);
+		hMainEngine->m_mapCreator.refresh(0);
+
+		hMainEngine->m_mapCreator.drawScene(hWindow);
 		//
 		hWindow.display();
 		FPS++;

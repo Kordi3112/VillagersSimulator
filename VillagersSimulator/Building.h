@@ -1,5 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Coord.h"
+
+enum BuildingType
+{
+	SIMPLY_HOUSE,
+	CHURCH,
+	TOWER,
+
+
+
+};
 
 class Building
 {
@@ -10,7 +21,9 @@ public:
 	//
 
 private:
-	sf::Vector2f m_position;
-
+	//Coord m_position;
+	Coord m_leftTop;
+	Coord m_rightBot;
+	BuildingType m_type;
 };
 
