@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 //
+#include "Random.h"
 #include "Coord.h"
 #include "MathOperations.h"
 #include "PerlinNoise.h"
@@ -62,6 +63,7 @@ public:
 
 	//
 	static sf::Color getBlockColor(BlockId blockId);
+
 };
 
 
@@ -111,6 +113,11 @@ public:
 	~Terrain();
 
 	void generateMap(int seed);
+	//
+	void generateBlueBackground();//sets all block to seawater
+	//
+	void clear();
+	//
 	void refreshChunkTexture(int chuckId); //calls Chunk::createTexture()
 	void refreshAllChunksTexture(); //the same like above
 	void releaseChunks(); //! very important to use that, release chunks memory space
@@ -133,6 +140,9 @@ public:
 	void updateTreeCoords();
 	int getTreesNumber() const;
 	Coord getTreeCoord(int id) const;
+	///SAVE & LOAD
+	bool loadFromFile(std::string path);
+	bool saveToFile(std::string path);
 	///
 	//
 	//-1 means fail

@@ -563,14 +563,18 @@ void ve::ButtonsPanel::draw(sf::RenderWindow& window)
 
 void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 {
+	std::vector<int> clickedButtons;
+
 	for (int i = 0; i < m_container.size(); i++)
 	{
 		//for each button check status
 		m_container[i]->checkButtonStatus(clickerPosition);
 
-		/*
+		
 		if (m_container[i]->getClickState() == ve::ClickState::CLICKED)
 		{
+			clickedButtons.push_back(i);
+
 			if (m_lastClickedButtonId == i)
 			{
 				//everything is good
@@ -581,7 +585,9 @@ void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 				for (int j = 0; j < m_container.size(); j++)
 				{
 					if (i == j)continue;
+
 					m_container[i]->setClickState(ve::ClickState::NONE_CLICK);
+					m_container[i]->endAnimation();
 				}
 			}
 
@@ -591,9 +597,18 @@ void ve::ButtonsPanel::checkStatus(sf::Vector2f clickerPosition)
 				m_lastClickedButtonId = i;
 			}
 		}
-		*/
+		else
+		{
+			if (m_lastClickedButtonId == i)
+			{
+				m_lastClickedButtonId = -1;
+			}
+		}
+		
 		
 	}
+
+
 }
 
 void ve::ButtonsPanel::setMaximumClickedButtons(unsigned var)
@@ -653,6 +668,11 @@ ve::Button* ve::ButtonsPanel::getButtonPtr(std::string name)
 	}
 
 	return nullptr;
+}
+
+int ve::ButtonsPanel::getClickedButtonid() const
+{
+	return m_lastClickedButtonId;
 }
 
 bool ve::ButtonsPanel::isButtonClicked(int id)
@@ -969,7 +989,9 @@ float ve::Slider::getValue() const
 void ve::Slider::checkStatus(sf::Vector2f clikerPosition)
 {
 	if (isMouseInPointerArea(clikerPosition)) {
+
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+
 			if ((clikerPosition.x >= getPosition().x - 0.40f * getSize().x) && (clikerPosition.x <= getPosition().x + 0.40f * getSize().x))
 			{
 				this->m_value = (clikerPosition.x - getPosition().x + 0.40f * getSize().x) * 1.25f / getSize().x;
@@ -988,4 +1010,340 @@ bool ve::Slider::isMouseInPointerArea(sf::Vector2f clickerPosition)
 {
 	if ((clickerPosition.x <= getPosition().x + ((m_value - 0.5f) * 0.8f + 0.05f) * getSize().x) && (clickerPosition.x >= getPosition().x + ((m_value - 0.5f) * 0.8f - 0.05f) * getSize().x) && (clickerPosition.y >= getPosition().y - 0.5f * getSize().y) && (clickerPosition.y <= getPosition().y + 0.5f * getSize().y)) return true;
 	else return false;
+}
+
+void ve::DialogWindowControler::draw(sf::RenderWindow& window)
+{
+	//Buttons
+	for (int i = 0; i < m_buttonContainer.size(); i++)
+	{
+		m_buttonContainer[i]->draw(window);
+	}
+
+	//Sliders
+	for (int i = 0; i < m_sliderContainer.size(); i++)
+	{
+		m_sliderContainer[i]->draw(window);
+	}
+	//TextBoxes
+	for (int i = 0; i < m_textBoxContainer.size(); i++)
+	{
+		m_textBoxContainer[i]->draw(window);
+	}
+}
+
+ve::Button* ve::DialogWindowControler::getButtonPtr(unsigned id)
+{
+	if (id  <0 || id >= m_buttonContainer.size())
+		return nullptr;
+
+	return m_buttonContainer[id];
+}
+
+ve::Button* ve::DialogWindowControler::getButtonPtr(std::string name)
+{
+	for (int i = 0; i < m_buttonNames.size(); i++)
+	{
+		if (m_buttonNames[i] == name)
+			return m_buttonContainer[i];
+	}
+
+	return nullptr;
+}
+//
+ve::Slider* ve::DialogWindowControler::getSliderPtr(unsigned id)
+{
+	if (id < 0 || id >= m_sliderContainer.size())
+		return nullptr;
+
+	return m_sliderContainer[id];
+}
+
+ve::Slider* ve::DialogWindowControler::getSliderPtr(std::string name)
+{
+	for (int i = 0; i < m_sliderNames.size(); i++)
+	{
+		if (m_sliderNames[i] == name)
+			return m_sliderContainer[i];
+	}
+
+	return nullptr;
+}
+
+ve::TextBox* ve::DialogWindowControler::getTextBoxPtr(unsigned id)
+{
+	if (id < 0 || id >= m_textBoxContainer.size())
+		return nullptr;
+
+	return m_textBoxContainer[id];
+}
+
+ve::TextBox* ve::DialogWindowControler::getTextBoxPtr(std::string name)
+{
+	for (int i = 0; i < m_textBoxNames.size(); i++)
+	{
+		if (m_textBoxNames[i] == name)
+			return m_textBoxContainer[i];
+	}
+
+	return nullptr;
+}
+////
+
+ve::TextBox::TextBox()
+{
+}
+
+ve::TextBox::~TextBox()
+{
+}
+
+void ve::TextBox::setSize(sf::Vector2f size)
+{
+	m_size = size;
+}
+
+sf::Vector2f ve::TextBox::getSize() const
+{
+	return m_size;
+}
+
+void ve::TextBox::setPosition(sf::Vector2f position)
+{
+	m_position = position;
+}
+
+sf::Vector2f ve::TextBox::getPosition() const
+{
+	return m_position;
+}
+
+void ve::TextBox::setBackgroundColor(sf::Color color)
+{
+	m_color = color;
+}
+
+sf::Color ve::TextBox::geBackgroundColor()
+{
+	return m_color;
+}
+
+void ve::TextBox::setString(std::string text)
+{
+	m_text = text;
+}
+
+std::string ve::TextBox::getString() const
+{
+	return m_text;
+}
+
+
+
+void ve::TextBox::setTextSize(float size)
+{
+	m_textSize = size;
+}
+
+float ve::TextBox::getTextSize()
+{
+	return m_textSize;
+}
+
+void ve::TextBox::setTextFont(sf::Font* font)
+{
+	m_font = font;
+}
+
+sf::Font* ve::TextBox::getTextFont()
+{
+	return m_font;
+}
+
+void ve::TextBox::setTextColor(sf::Color color)
+{
+	m_textcolor = color;
+}
+
+sf::Color ve::TextBox::getTextColor()
+{
+	return m_textcolor;
+}
+
+void ve::TextBox::setStyle(sf::Uint32 style)
+{
+	m_style = style;
+}
+
+sf::Uint32 ve::TextBox::getStyle()
+{
+	return m_style;
+}
+
+void ve::TextBox::setMargins(sf::Vector2f margins)
+{
+	m_margins = margins;
+}
+
+sf::Vector2f ve::TextBox::getMargins() const
+{
+	return m_margins;
+}
+
+void ve::TextBox::setTextPlace(Text_Place x, Text_Place y)
+{
+	m_placeX = x;
+	m_placeY = y;
+}
+
+ve::TextBox::Text_Place ve::TextBox::getTextPlaceX() const
+{
+	return m_placeX;
+}
+
+ve::TextBox::Text_Place ve::TextBox::getTextPlaceY() const
+{
+	return m_placeY;
+}
+
+void ve::TextBox::draw(sf::RenderWindow& window)
+{
+	sf::RectangleShape box;
+	box.setPosition(getPosition());
+	box.setSize(getSize());
+	box.setFillColor(geBackgroundColor());
+	box.setOrigin(box.getSize().x / 2.0f, box.getSize().y / 2.0f);
+	//
+	window.draw(box);
+	//
+	sf::Text text;
+	text.setFont(*getTextFont());
+	text.setCharacterSize(getTextSize());
+	text.setFillColor(getTextColor());
+	text.setStyle(getStyle());
+	text.setString(getString());
+	//
+	sf::Vector2f textPosition;
+	sf::Vector2f textOrigin;
+	///Placex
+	if (getTextPlaceX() == Text_Place::TEXT_LEFT)
+	{
+		textOrigin.x = 0.0f;
+		textPosition.x = getPosition().x - box.getSize().x / 2.0f + getMargins().x;
+	}
+	else if (getTextPlaceX() == Text_Place::TEXT_MIDDLE)
+	{
+		textOrigin.x = text.getGlobalBounds().width / 2.0f;
+		textPosition.x = getPosition().x;
+	}
+	else if (getTextPlaceX() == Text_Place::TEXT_RIGHT)
+	{
+		textOrigin.x = text.getGlobalBounds().width;
+		textPosition.x = getPosition().x + box.getSize().x / 2.0f - getMargins().x;
+	}
+	///Placey
+	if (getTextPlaceY() == Text_Place::TEXT_TOP)
+	{
+		textOrigin.y = 0.0f;
+		textPosition.y = getPosition().y - box.getSize().y / 2.0f + getMargins().y;
+	}
+	else if (getTextPlaceY() == Text_Place::TEXT_MIDDLE)
+	{
+		textOrigin.y = text.getGlobalBounds().height / 2.0f;
+		textPosition.y = getPosition().y;
+	}
+	else if (getTextPlaceY() == Text_Place::TEXT_BOTTOM)
+	{
+		textOrigin.y = text.getGlobalBounds().height;
+		textPosition.y = getPosition().y + box.getSize().y / 2.0f - getMargins().y;
+	}
+
+	text.setOrigin(textOrigin);
+	text.setPosition(textPosition);
+	//
+	
+	window.draw(text);
+}
+
+
+
+
+
+
+////
+ve::DialogWindowControler::DialogWindowControler()
+{
+}
+
+ve::DialogWindowControler::~DialogWindowControler()
+{
+}
+
+int ve::DialogWindowControler::addElement(std::string name, Button* dialogWindow)
+{
+	m_buttonContainer.push_back(dialogWindow);
+	m_buttonNames.push_back(name);
+
+	return m_buttonContainer.size() - 1;
+}
+
+int ve::DialogWindowControler::addElement(std::string name, Slider* dialogWindow)
+{
+	m_sliderContainer.push_back(dialogWindow);
+	m_sliderNames.push_back(name);
+
+	return m_sliderContainer.size() - 1;
+}
+
+int ve::DialogWindowControler::addElement(std::string name, TextBox* dialogWindow)
+{
+	m_textBoxContainer.push_back(dialogWindow);
+	m_textBoxNames.push_back(name);
+
+	return m_textBoxContainer.size() - 1;
+}
+
+void ve::DialogWindowControler::releaseAllElements()
+{
+	//Buttons
+	for (int i = 0; i < m_buttonContainer.size(); i++)
+	{
+		delete m_buttonContainer[i];
+	}
+
+	m_buttonNames.clear();
+
+	//Sliders
+	for (int i = 0; i < m_sliderContainer.size(); i++)
+	{
+		delete m_sliderContainer[i];
+	}
+
+	m_sliderNames.clear();
+
+	//TextBoxes
+	for (int i = 0; i < m_textBoxContainer.size(); i++)
+	{
+		delete m_textBoxContainer[i];
+	}
+
+	m_textBoxNames.clear();
+}
+
+void ve::DialogWindowControler::checkStatus(sf::Vector2f clickerPosition)
+{
+	//Buttons
+	for (int i = 0; i < m_buttonContainer.size(); i++)
+	{
+		m_buttonContainer[i]->checkButtonStatus(clickerPosition);
+	}
+
+	//Sliders
+	for (int i = 0; i < m_sliderContainer.size(); i++)
+	{
+		m_sliderContainer[i]->checkStatus(clickerPosition);
+	}
+
+	//TextBoxes
+	//.....
 }

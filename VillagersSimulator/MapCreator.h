@@ -1,11 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <windows.h>
+#include <conio.h>
+#include "FileManaging.h"
 #include "IzoMap.h"
 #include "Terrain.h"
 //Buttons etc.
 #include "DialogWindow.h"
 #include "Resources.h"
-
+#include "Random.h"
 //tool used to draw on map
 enum BrushShape
 {
@@ -30,13 +33,17 @@ public:
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition() const;
 	//
+	void setPickedBlock(Block block);
+	Block getPickedBlocked() const;
+	//
 	void setHardness(float level);
+	float getHardness() const;
 	void draw();
 	//
 	void reset();
 private:
 	BrushShape m_brushShape;
-	float m_size;
+	float m_size = 10.0f;
 	//this parameter is responsible for density drawed land
 	float m_hardness = 1.0f; //is between 0 and 1
 	//position on screen
@@ -62,6 +69,7 @@ public:
 	void setEditAreaViewport(sf::Rect<float> Viewport);
 	void setEditAreaZoom(float Zoom);
 	void setEditAreaCameraPosition(sf::Vector2f CameraPosition);
+	void moveEditAreaCamera(sf::Vector2f vector);
 	//
 	sf::Rect<float> getEditAreaViewport() const;
 	float getEditAreaZoom() const;
@@ -79,8 +87,11 @@ public:
 	void setBrushSize(float size);
 	///Terrain generate stuff
 	void generateOcean(); //...and init chunks
-
+	//
 	bool m_mouseOnMap;
+	///SAVING MAP
+	void saveMap();
+	void loadMap();
 	///POST RENDERING
 	//making the map better looking
 	void postTerrainRender();
@@ -94,6 +105,7 @@ private:
 	///UI
 	void drawUI(sf::RenderWindow& window);
 	//
+	ve::DialogWindowControler m_dialogWindowControler;
 	ve::ButtonMenu m_buttonMenu1;
 	///TEXTURES
 	Resources* m_pResources;

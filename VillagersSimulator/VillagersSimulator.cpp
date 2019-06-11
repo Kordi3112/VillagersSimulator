@@ -34,42 +34,18 @@ int main()
 
 	hMainEngine->setViewPort(sf::Rect<float>(0.1f, 0.1f, 0.8f, 0.5f));
 	hMainEngine->loadResources();
+	hMainEngine->m_pRenderWindow = &hWindow;
 	//RESOURCES
 
-	///JUNK
-	TexturePack texturePack;
-	texturePack.loadNewTexture("1", "../data/texturepacks/button1/noneclick.png");
-	texturePack.loadNewTexture("2", "../data/texturepacks/button1/onIt.png");
-	texturePack.loadNewTexture("3", "../data/texturepacks/button1/click.png");
-	
-	TexturePack menuBackground;
-	menuBackground.loadNewTexture("1", "../data/texturepacks/buttonMenu/buttonMenu1.png");
 
-	
-	
-	hMainEngine->m_mapCreator;
-	hMainEngine->m_mapCreator.setResourcesPtr(hMainEngine->getResourcesPtr());
-	hMainEngine->m_mapCreator.init(hWindow);
+	hMainEngine->changeScene(MainEngine::GAMESTAGE::MAPCREATOR);
+	hMainEngine->changeScene(MainEngine::GAMESTAGE::SIMULATION);
 
-	hMainEngine->m_mapCreator.setEditAreaCameraPosition(cameraPos);
-	hMainEngine->m_mapCreator.setEditAreaViewport(sf::Rect<float>(0.1, 0.1, 0.8, 0.8));
-	hMainEngine->m_mapCreator.setEditAreaZoom(g_zoom);
-	
-
-
-	hMainEngine->m_pRenderWindow = &hWindow;
 	//
-
-
-	//IzoMap::Tools::createHoles(&izoMap, fields, radius, shift);
 	//Thread
 	sf::Thread thread(&MainEngine::ThreadFunction, hMainEngine); //thread function is inside MainEngine class
 	thread.launch();
 	//
-	Terrain terrain;
-	terrain.generateMap(time(NULL));
-	terrain.refreshAllChunksTexture();
-	std::cout << (int)sf::Color::Green.b << std::endl;
 	//
 	minute.restart();
 	frameTimeClock.restart();
@@ -88,38 +64,25 @@ int main()
 			{
 				if (event.key.code == sf::Keyboard::Escape)hWindow.close();
 				//
-				if (event.key.code == sf::Keyboard::W)g_zoom *= 2;
-				if (event.key.code == sf::Keyboard::S)g_zoom /= 2;
-				
-
+				///READ INPUT
+				hMainEngine->readKeyPressedInput(event);
+			
 			}
 		}
 		///--------------REFRESH COTROLERS
-		hMainEngine->m_mapCreator.setEditAreaCameraPosition(cameraPos);
-		hMainEngine->m_mapCreator.refreshUI(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
-
-		//
-		int refreshTimeUs = frameTimeClock.getElapsedTime().asMicroseconds();
-		frameTimeClock.restart();
-		float splitSecond = refreshTimeUs / 1000000.0f;
-		//
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))cameraPos.x -= 200 * splitSecond;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))cameraPos.x += 200 * splitSecond;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))cameraPos.y -= 200 * splitSecond;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))cameraPos.y += 200 * splitSecond;
 
 		///
+		int timeDifference = frameTimeClock.getElapsedTime().asMicroseconds();
+		frameTimeClock.restart();
+		float deltaTime = timeDifference / 1000000.0f;
+
+		hMainEngine->refresh(deltaTime);
+		hMainEngine->readInput(deltaTime);
+
 		///---------RENDER
 		hWindow.clear(sf::Color::Green);
-
 		//
-		hMainEngine->m_mapCreator.setBrushSize(5);
-		hMainEngine->m_mapCreator.setEditAreaZoom(g_zoom);
-		//hMainEngine->draw(hWindow);
-		hMainEngine->m_mapCreator.refreshBrushPosRelativeToMap(hWindow);
-		hMainEngine->m_mapCreator.refresh(0);
-
-		hMainEngine->m_mapCreator.drawScene(hWindow);
+		hMainEngine->draw(hWindow);
 		//
 		hWindow.display();
 		FPS++;
@@ -135,7 +98,6 @@ int main()
 	//delete thread
 	thread.terminate();
 	//clean memory
-	terrain.releaseChunks();
 	delete hMainEngine;
 	//
 	return 0;

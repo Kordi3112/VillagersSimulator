@@ -31,10 +31,9 @@ public:
 		LOADING_SCREEN,
 		MAIN_MENU,
 		CHOOSESETMAP,
-		MAPCREATOR
+		MAPCREATOR,
+		SIMULATION, //game
 	};
-	
-	//
 
 	//
 	MainEngine();
@@ -44,6 +43,11 @@ public:
 	void resume();
 	void setRunTimeSpeed(float speed);
 	void start();
+	///INIT
+
+	///CHANGING SCENE
+	MainEngine::GAMESTAGE getCurrentGameStage() const;
+	void changeScene(MainEngine::GAMESTAGE stage);
 	//
 	void setCameraPosition(sf::Vector2f position);
 	sf::Vector2f getCameraPosition() const;
@@ -53,13 +57,17 @@ public:
 	sf::Rect<float> getViewPort() const;
 	//
 	void ThreadFunction();//this function is for second thread
-	//
+	///DRAW
 	void draw(sf::RenderWindow& window);
+	///INPUT
+	void readInput(float deltaTime);
+	void readKeyPressedInput(sf::Event& event);
+	///REFRESH
+	void refresh(float deltaTime); //in us
 	//
 	void loadResources();
 	Resources* getResourcesPtr();
 	//
-	MapCreator m_mapCreator;
 	sf::RenderWindow* m_pRenderWindow;
 private:
 
@@ -67,9 +75,10 @@ private:
 	float m_zoom = 1.0f;
 	sf::Rect<float> m_viewPortRect; // it determine position of the world frame on the whole screen
 	//
-	void generateMap();
 	void spawnVillagers();
-	//
+	///SIMULATION INIT
+	void simulationInit();
+	///SIMULATION FRAME
 	void drawInterface(sf::RenderWindow& window);
 	void drawGameFrame(sf::RenderWindow& window);
 	//==//
@@ -79,8 +88,10 @@ private:
 	void drawLoadingScreenStage(sf::RenderWindow& window, sf::Rect<float> viewPort);
 
 	///FIELDS
-	Terrain* m_hTerain;
+	Terrain* m_hTerrain;
 	std::vector<Village*> m_villageContainer;
+	//
+	MapCreator m_mapCreator;
 	//
 	ApiEvents m_apiEvents;
 	GAMESTAGE m_gameStage;

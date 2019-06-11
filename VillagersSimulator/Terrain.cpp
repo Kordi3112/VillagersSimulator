@@ -27,6 +27,35 @@ void Terrain::generateMap(int seed)
 	createLand(seed);
 }
 
+void Terrain::generateBlueBackground()
+{
+	sf::Vector2f genChunkPos0 = sf::Vector2f((CHUNK_X_SIZE + 1) / 2.0f, (CHUNK_Y_SIZE + 1) / 2.0f);//position of first chunk
+																	//f.e (16,16)
+	for (int x = 0; x < MAP_X_SIZE / CHUNK_X_SIZE; x++)
+	{
+		for (int y = 0; y < MAP_Y_SIZE / CHUNK_Y_SIZE; y++)
+		{
+			Chunk* chunk = new Chunk();
+
+			m_map.push_back(chunk);
+
+			chunk->setCoords(sf::Vector2f(genChunkPos0.x + CHUNK_X_SIZE * y, genChunkPos0.y + CHUNK_Y_SIZE * x));
+
+			chunk->fill(Block::BlockId::ID_SEAWATER);
+		}
+	}
+
+	refreshAllChunksTexture();
+}
+
+void Terrain::clear()
+{
+	for (int i = 0; i < m_map.size(); i++)
+	{
+		delete m_map[i];
+	}
+}
+
 void Terrain::refreshChunkTexture(int chunkId)
 {
 	if (chunkId < 0 or chunkId >= m_map.size())return;
@@ -167,6 +196,19 @@ bool Terrain::setBlock(int n, int x, int y, Block::BlockId id, int type, sf::Col
 void Terrain::addChunk(Chunk* chunk)
 {
 	m_map.push_back(chunk);
+}
+
+void Terrain::updateTreeCoords()
+{
+	Random random;
+
+	for (int i = 0; i < m_map.size(); i++)
+	{
+		for (int x = 0; x < MAP_X_SIZE; x++)
+		{
+
+		}
+	}
 }
 
 int Terrain::getTreesNumber() const
@@ -361,14 +403,14 @@ Block Chunk::getBlock(int x, int y) const
 	if ((x < 0 or x >= CHUNK_X_SIZE) or (y < 0 or y >= CHUNK_Y_SIZE))
 		return Block();
 	
-	return this->m_block[x][y];
+	return m_block[x][y];
 }
 
 bool Chunk::setBlock(int x, int y, Block material)
 {
 	if ((x < 0 or x >= CHUNK_X_SIZE) or (y < 0 or y >= CHUNK_Y_SIZE))return false;
 
-	this->m_block[x][y] = material;
+	m_block[x][y] = material;
 
 	m_changed = true;
 
@@ -428,11 +470,12 @@ void Chunk::createTexture()
 
 
 	image.create(CHUNK_X_SIZE, CHUNK_Y_SIZE, Block::getBlockColor(Block::ID_NOTHING));
+
 	for (int x = 0; x < CHUNK_X_SIZE; x++)
 	{
 		for (int y = 0; y < CHUNK_Y_SIZE; y++)
 		{
-			image.setPixel(x, y, this->m_block[x][y].color);
+			image.setPixel(x, y, Block::getBlockColor(getBlock(x,y).blockId));
 		}
 	}
 	

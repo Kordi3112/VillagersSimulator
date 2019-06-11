@@ -31,7 +31,7 @@ public:
 	//
 
 protected:
-	Coord m_position; //position on map
+	Coord m_position; //position on map 
 	bool  m_isMale;//true-Male false-Female
 	float m_hunger = 100;
 	float m_exhaustion = 0;

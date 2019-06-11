@@ -199,6 +199,8 @@ namespace ve
 		ve::Button* getButtonPtr(int id);
 		ve::Button* getButtonPtr(std::string name);
 		//
+		int getClickedButtonid() const;
+		//
 		bool isButtonClicked(int id);
 		//
 		void release(); //clean up buttons
@@ -284,6 +286,8 @@ namespace ve
 		void addComponent(ButtonsPanel* Panel);
 		void addComponent(Button* button);
 		void addComponent(Slider* slider);
+		///GET
+		//Buttons
 		///RELEASE
 		void releaseAllComponents();
 		void releaseInitButton();
@@ -299,33 +303,114 @@ namespace ve
 		//
 		RectangleButton* m_initButton = nullptr;
 	};
+
+	class TextBox
+	{
+	public:
+		//
+		enum Text_Place {
+			TEXT_MIDDLE,
+			TEXT_RIGHT,
+			TEXT_LEFT,
+			TEXT_TOP,
+			TEXT_BOTTOM,
+		};
+
+
+		//
+		TextBox();
+		~TextBox();
+		//
+		void setSize(sf::Vector2f size);
+		sf::Vector2f getSize() const;
+		//
+		void setPosition(sf::Vector2f position);
+		sf::Vector2f getPosition() const;
+		//
+		void setBackgroundColor(sf::Color color);
+		sf::Color geBackgroundColor();
+		//
+		void setString(std::string text);
+		std::string getString() const;
+		//
+		void setTextSize(float size);
+		float getTextSize();
+		//
+		void setTextFont(sf::Font* font);
+		sf::Font* getTextFont();
+		//
+		void setTextColor(sf::Color color);
+		sf::Color getTextColor();
+		//
+		void setStyle(sf::Uint32 style);
+		sf::Uint32 getStyle();
+		//
+		void setMargins(sf::Vector2f margins);
+		sf::Vector2f getMargins() const;
+		//
+		void setTextPlace(Text_Place x, Text_Place y);
+		Text_Place getTextPlaceX() const;
+		Text_Place getTextPlaceY() const;
+		//
+		void draw(sf::RenderWindow& window);
+	private:
+		sf::Vector2f m_size;
+		sf::Vector2f m_position;
+		sf::Color m_color;
+		sf::Font* m_font;
+		float m_textSize;
+		sf::Color m_textcolor;
+		std::string m_text;
+		sf::Uint32 m_style;
+		sf::Vector2f m_margins;
+		Text_Place m_placeX = Text_Place::TEXT_MIDDLE;
+		Text_Place m_placeY = Text_Place::TEXT_MIDDLE;
+
+	};
+
+	///=////////////////////////////////////////////////////
+	//  DIALOGWINDOWS CONTROLER
+	///=///////////////////////////////////////////////////
+
+	//controler for dialog windows
+
+	class DialogWindowControler
+	{
+	public:
+		DialogWindowControler();
+		~DialogWindowControler();
+		//
+		int addElement(std::string name, Button* dialogWindow);
+		int addElement(std::string name, Slider* dialogWindow);
+		int addElement(std::string name, TextBox* dialogWindow);
+		//
+		void releaseAllElements();
+		//
+		void checkStatus(sf::Vector2f clickerPosition);
+		//
+		void draw(sf::RenderWindow& window);
+		//
+		Button* getButtonPtr(unsigned id);
+		Button* getButtonPtr(std::string name);
+		//
+		Slider* getSliderPtr(unsigned id);
+		Slider* getSliderPtr(std::string name);
+		//
+		TextBox* getTextBoxPtr(unsigned id);
+		TextBox* getTextBoxPtr(std::string name);
+	private:
+		//
+		std::vector<Button*> m_buttonContainer;
+		std::vector<std::string> m_buttonNames;
+		//
+		std::vector<Slider*> m_sliderContainer;
+		std::vector<std::string> m_sliderNames;
+		//
+		std::vector<TextBox*> m_textBoxContainer;
+		std::vector<std::string> m_textBoxNames;
+
+	};
+
+
 }
-
-///=////////////////////////////////////////////////////
-//  DIALOGWINDOWS CONTROLER
-///=///////////////////////////////////////////////////
-
-//controler for dialog windows
-/*
-class DialogWindowControler
-{
-public:
-	DialogWindowControler();
-	~DialogWindowControler();
-	//
-	void addElement(Button* dialogWindow);
-	void releaseAllElements();
-	//
-	void setPosition(sf::Vector2f position);
-	sf::Vector2f getPosition() const;
-	//
-	void draw(sf::RenderWindow& window);
-	//
-	Button* getButtonPtr(unsigned id);
-private:
-	std::vector<Button*> m_buttonContainer;
-};
-*/
-
-
 

@@ -131,6 +131,7 @@
     <ClCompile Include="ApiEvents.cpp" />
     <ClCompile Include="Coord.cpp" />
     <ClCompile Include="DialogWindow.cpp" />
+    <ClCompile Include="FileManaging.cpp" />
     <ClCompile Include="IzoMap.cpp" />
     <ClCompile Include="MainEngine.cpp" />
     <ClCompile Include="MapCreator.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="ApiEvents.h" />
     <ClInclude Include="Coord.h" />
     <ClInclude Include="DialogWindow.h" />
+    <ClInclude Include="FileManaging.h" />
     <ClInclude Include="IzoMap.h" />
     <ClInclude Include="MainEngine.h" />
     <ClInclude Include="MapCreator.h" />
