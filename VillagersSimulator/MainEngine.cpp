@@ -160,6 +160,10 @@ void MainEngine::refresh(float deltaTime)
 		m_mapCreator.refresh(deltaTime);
 		m_mapCreator.refreshUI(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y));
 	}
+	if (m_gameStage == MainEngine::GAMESTAGE::SIMULATION)
+	{
+
+	}
 }
 
 void MainEngine::loadResources()
@@ -177,10 +181,16 @@ void MainEngine::simulationInit()
 	setViewPort(sf::FloatRect(0, 0, 1, 1));
 	setZoom(2.0f);
 	setCameraPosition(sf::Vector2f(MAP_X_SIZE / 2.f, MAP_Y_SIZE / 2.f));
+
+	//
+
+	//
 }
 
 void MainEngine::drawInterface(sf::RenderWindow& window)
 {
+
+
 }
 
 void MainEngine::drawGameFrame(sf::RenderWindow& window)

@@ -79,8 +79,8 @@ void MapCreator::init(sf::RenderWindow& window)
 	brushType2->setTextures(m_pResources->mapCreator_Buttons.getTexturePtr("rectangleBrush"));
 	brushType2->setPosition(sf::Vector2f(m_buttonMenu1.getPosition().x + m_buttonMenu1.getSize().x / 4.0f, m_buttonMenu1.getPosition().y - m_buttonMenu1.getSize().y * 0.45f));
 
-	m_buttonMenu1.addComponent(brushType1);
-	m_buttonMenu1.addComponent(brushType2);
+	m_buttonMenu1.addComponent("circleBrush",brushType1);
+	m_buttonMenu1.addComponent("rectangleBrush",brushType2);
 	//Sliders
 	ve::Slider* sizeSlider = new ve::Slider();
 	sizeSlider->setSliderColor(sf::Color::White);
@@ -89,13 +89,13 @@ void MapCreator::init(sf::RenderWindow& window)
 	sizeSlider->setPosition(sf::Vector2f(m_buttonMenu1.getPosition().x, m_buttonMenu1.getPosition().y - m_buttonMenu1.getSize().y * 0.35f));
 	sizeSlider->setValue(0.5f);
 
-	ve::Slider* hardenessSlider = new ve::Slider();
-	*hardenessSlider = *sizeSlider; //copy
-	sizeSlider->setPosition(sf::Vector2f(m_buttonMenu1.getPosition().x, m_buttonMenu1.getPosition().y - m_buttonMenu1.getSize().y * 0.25f));
-	sizeSlider->setValue(1.0f);
+	ve::Slider* hardnessSlider = new ve::Slider();
+	*hardnessSlider = *sizeSlider; //copy
+	hardnessSlider->setPosition(sf::Vector2f(m_buttonMenu1.getPosition().x, m_buttonMenu1.getPosition().y - m_buttonMenu1.getSize().y * 0.25f));
+	hardnessSlider->setValue(1.0f);
 
-	m_buttonMenu1.addComponent(sizeSlider);
-	m_buttonMenu1.addComponent(hardenessSlider);
+	m_buttonMenu1.addComponent("sizeSlider", sizeSlider);
+	m_buttonMenu1.addComponent("hardnessSlider", hardnessSlider);
 
 	///=TERRAIN BUTTONS
 	/////////
@@ -183,7 +183,7 @@ void MapCreator::init(sf::RenderWindow& window)
 
 	buttonPanelTerrain->addButton("tree", terrain_tree);
 	//ADD COMPONENT
-	m_buttonMenu1.addComponent(buttonPanelTerrain);
+	m_buttonMenu1.addComponent("terrainButtonPanel", buttonPanelTerrain);
 }
 
 void MapCreator::setResourcesPtr(Resources* resources)
@@ -263,10 +263,41 @@ void MapCreator::refreshBrushPosRelativeToMap(sf::RenderWindow& window)
 
 void MapCreator::refresh(unsigned deltaTime)
 {
+	m_brush.setBrushShape(BrushShape::CIRCLE_BRUSH);
 	///UPDATE BRUSH
-	//material
-	//m_buttonMenu1.get
-
+	//PICKED BLOCK
+	int clickedbuttonId = m_buttonMenu1.getComponentButtonPanel("terrainButtonPanel")->getClickedButtonId();
+	if (clickedbuttonId == -1)
+	{
+		m_brush.setPickedBlock(Block(Block::BlockId::ID_NOTHING));
+	}
+	else
+	{
+		std::string clickedName = m_buttonMenu1.getComponentButtonPanel("terrainButtonPanel")->getName(clickedbuttonId);
+		if (clickedName == "seawater")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_SEAWATER));
+		else if (clickedName == "water")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_WATER));
+		else if (clickedName == "grass")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_GRASS));
+		else if (clickedName == "sand")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_SAND));
+		else if (clickedName == "rock1")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_ROCK1));
+		else if (clickedName == "rock2")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_ROCK2));
+		else if (clickedName == "snow")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_SNOW));
+		else if (clickedName == "tree")
+			m_brush.setPickedBlock(Block(Block::BlockId::ID_GRASSTREE));
+		//....
+		
+	}
+	//SIZE
+	float maxBrushSize = 80.0f;
+	m_brush.setSize(m_buttonMenu1.getComponentSlider("sizeSlider")->getValue() * maxBrushSize);
+	//HARDNESS
+	m_brush.setHardness(m_buttonMenu1.getComponentSlider("hardnessSlider")->getValue());
 	///RAND HANDLE
 	Random random;
 
@@ -552,7 +583,7 @@ void MapCreator::loadMap()
 
 			blockToFill.type = atoi(block.substr(2, 1).c_str());
 
-			m_terrain->setBlock(rowId - 4, blockId % CHUNK_X_SIZE, blockId / CHUNK_X_SIZE, blockToFill);
+			m_terrain->setBlock(rowId - 4, blockId / CHUNK_X_SIZE, blockId % CHUNK_X_SIZE, blockToFill);
 
 			blockId++;
 			block.clear();

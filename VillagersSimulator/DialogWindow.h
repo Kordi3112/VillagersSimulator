@@ -199,7 +199,8 @@ namespace ve
 		ve::Button* getButtonPtr(int id);
 		ve::Button* getButtonPtr(std::string name);
 		//
-		int getClickedButtonid() const;
+		int getClickedButtonId() const;
+		std::string getName(int id);
 		//
 		bool isButtonClicked(int id);
 		//
@@ -283,18 +284,23 @@ namespace ve
 		///CHECK
 		void checkStatus(sf::Vector2f clickerPosition);
 		///ADD
-		void addComponent(ButtonsPanel* Panel);
-		void addComponent(Button* button);
-		void addComponent(Slider* slider);
+		void addComponent(std::string name, ButtonsPanel* Panel);
+		void addComponent(std::string name, Button* button);
+		void addComponent(std::string name, Slider* slider);
 		///GET
-		//Buttons
+		ButtonsPanel* getComponentButtonPanel(std::string name);
+		Button* getComponentButton(std::string name);
+		Slider* getComponentSlider(std::string name);
 		///RELEASE
 		void releaseAllComponents();
 		void releaseInitButton();
 	private:
 		std::vector<ButtonsPanel*> m_containerPanel;
+		std::vector<std::string> m_containerPanelName;
 		std::vector<Button*> m_containerButton;
+		std::vector<std::string> m_containerButtonName;
 		std::vector<Slider*> m_containerSlider;
+		std::vector<std::string> m_containerSliderName;
 		sf::Texture* m_backgroundTexture = nullptr;
 		sf::Vector2f m_size;
 		sf::Vector2f m_position;

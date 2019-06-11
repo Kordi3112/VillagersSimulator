@@ -1,40 +1,4 @@
-﻿  MainEngine.cpp
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(33,74): warning C4305:  'argument': truncation from 'double' to 'T'
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(33,74): warning C4305:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(33,74): warning C4305:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(33,74): warning C4305:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(33,74): warning C4305:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(160,24): warning C4244:  'argument': conversion from 'float' to 'unsigned int', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:             T=int
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:         and
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,91): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:             T=int
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:         and
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(161,63): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,49): warning C4244:  'argument': conversion from 'T' to 'unsigned int', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,49): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,49): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,49): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,49): warning C4244:         ]
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,28): warning C4244:  'argument': conversion from 'T' to 'unsigned int', possible loss of data
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,28): warning C4244:         with
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,28): warning C4244:         [
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,28): warning C4244:             T=float
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(196,28): warning C4244:         ]
-  Terrain.cpp
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.cpp(215,20): warning C4018:  '<': signed/unsigned mismatch
+﻿  Terrain.cpp
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(53,20): warning C4018:  '<': signed/unsigned mismatch
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(61,29): warning C4018:  '>=': signed/unsigned mismatch
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(68,20): warning C4018:  '<': signed/unsigned mismatch
@@ -56,13 +20,11 @@ D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terra
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(183,29): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(191,17): warning C4018:  '>=': signed/unsigned mismatch
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(205,20): warning C4018:  '<': signed/unsigned mismatch
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(207,38): error C2143:  syntax error: missing ';' before ')'
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(221,19): warning C4018:  '>=': signed/unsigned mismatch
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(236,29): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(237,29): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(283,53): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(291,22): warning C4018:  '<': signed/unsigned mismatch
-  VillagersSimulator.cpp
 D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(297,15): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(75,22): warning C4244:  'initializing': conversion from 'sf::Int64' to 'int', possible loss of data
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(297,15): warning C4244: D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.cpp(187) : warning C4715: 'Terrain::setBlock': not all control paths return a value
+  VillagersSimulator.vcxproj -> D:\VisualProjects\VillagersSimulator\VillagersSimulator\Debug\VillagersSimulator.exe

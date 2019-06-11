@@ -30,20 +30,21 @@ int main()
 	sf::RenderWindow hWindow(sf::VideoMode(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), 32), "VillagersSimulator", sf::Style::Fullscreen, contextSettings);
 
 	///MainEngine Init
-	MainEngine* hMainEngine = new MainEngine();//handle to MainEngine 
+	MainEngine hMainEngine; //handle to MainEngine 
 
-	hMainEngine->setViewPort(sf::Rect<float>(0.1f, 0.1f, 0.8f, 0.5f));
-	hMainEngine->loadResources();
-	hMainEngine->m_pRenderWindow = &hWindow;
+	hMainEngine.setViewPort(sf::Rect<float>(0.1f, 0.1f, 0.8f, 0.5f));
+	hMainEngine.loadResources();
+	
+	hMainEngine.m_pRenderWindow = &hWindow;
 	//RESOURCES
 
 
-	hMainEngine->changeScene(MainEngine::GAMESTAGE::MAPCREATOR);
-	hMainEngine->changeScene(MainEngine::GAMESTAGE::SIMULATION);
+	hMainEngine.changeScene(MainEngine::GAMESTAGE::MAPCREATOR);
+	//hMainEngine.changeScene(MainEngine::GAMESTAGE::SIMULATION);
 
 	//
 	//Thread
-	sf::Thread thread(&MainEngine::ThreadFunction, hMainEngine); //thread function is inside MainEngine class
+	sf::Thread thread(&MainEngine::ThreadFunction, &hMainEngine); //thread function is inside MainEngine class
 	thread.launch();
 	//
 	//
@@ -65,7 +66,7 @@ int main()
 				if (event.key.code == sf::Keyboard::Escape)hWindow.close();
 				//
 				///READ INPUT
-				hMainEngine->readKeyPressedInput(event);
+				hMainEngine.readKeyPressedInput(event);
 			
 			}
 		}
@@ -76,13 +77,13 @@ int main()
 		frameTimeClock.restart();
 		float deltaTime = timeDifference / 1000000.0f;
 
-		hMainEngine->refresh(deltaTime);
-		hMainEngine->readInput(deltaTime);
+		hMainEngine.refresh(deltaTime);
+		hMainEngine.readInput(deltaTime);
 
 		///---------RENDER
 		hWindow.clear(sf::Color::Green);
 		//
-		hMainEngine->draw(hWindow);
+		hMainEngine.draw(hWindow);
 		//
 		hWindow.display();
 		FPS++;
@@ -98,7 +99,6 @@ int main()
 	//delete thread
 	thread.terminate();
 	//clean memory
-	delete hMainEngine;
 	//
 	return 0;
 }

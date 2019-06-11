@@ -670,9 +670,17 @@ ve::Button* ve::ButtonsPanel::getButtonPtr(std::string name)
 	return nullptr;
 }
 
-int ve::ButtonsPanel::getClickedButtonid() const
+int ve::ButtonsPanel::getClickedButtonId() const
 {
 	return m_lastClickedButtonId;
+}
+
+std::string ve::ButtonsPanel::getName(int id)
+{
+	if (id < 0 || id >= m_container.size())
+		return std::string();
+
+	else return m_names[id];
 }
 
 bool ve::ButtonsPanel::isButtonClicked(int id)
@@ -851,20 +859,63 @@ void ve::ButtonMenu::checkStatus(sf::Vector2f clickerPosition)
 	
 }
 
-void ve::ButtonMenu::addComponent(ButtonsPanel* Panel)
+void ve::ButtonMenu::addComponent(std::string name, ButtonsPanel* Panel)
 {
 	m_containerPanel.push_back(Panel);
+	m_containerPanelName.push_back(name);
 }
 
-void ve::ButtonMenu::addComponent(Button* button)
+void ve::ButtonMenu::addComponent(std::string name, Button* Panel)
 {
-	m_containerButton.push_back(button);
+	m_containerButton.push_back(Panel);
+	m_containerButtonName.push_back(name);
 }
 
-void ve::ButtonMenu::addComponent(Slider* slider)
+void ve::ButtonMenu::addComponent(std::string name, Slider* Panel)
 {
-	m_containerSlider.push_back(slider);
+	m_containerSlider.push_back(Panel);
+	m_containerSliderName.push_back(name);
 }
+
+ve::ButtonsPanel* ve::ButtonMenu::getComponentButtonPanel(std::string name)
+{
+	for (int i = 0; i < m_containerPanelName.size(); i++)
+	{
+		if(m_containerPanelName[i] == name)
+		{
+			return m_containerPanel[i];
+		}
+	}
+
+	return nullptr;
+}
+
+ve::Button* ve::ButtonMenu::getComponentButton(std::string name)
+{
+	for (int i = 0; i < m_containerButtonName.size(); i++)
+	{
+		if (m_containerButtonName[i] == name)
+		{
+			return m_containerButton[i];
+		}
+	}
+
+	return nullptr;
+}
+
+ve::Slider* ve::ButtonMenu::getComponentSlider(std::string name)
+{
+	for (int i = 0; i < m_containerSliderName.size(); i++)
+	{
+		if (m_containerSliderName[i] == name)
+		{
+			return m_containerSlider[i];
+		}
+	}
+
+	return nullptr;
+}
+
 
 void ve::ButtonMenu::releaseAllComponents()
 {
@@ -874,16 +925,23 @@ void ve::ButtonMenu::releaseAllComponents()
 		m_containerPanel[i]->release();
 		delete m_containerPanel[i];
 	}
+
+	m_containerPanelName.clear();
+
 	//BUTTONS
 	for (int i = 0; i < m_containerButton.size(); i++)
 	{
 		delete m_containerButton[i];
 	}
+
+	m_containerButtonName.clear();
 	//SLIDERS
 	for (int i = 0; i < m_containerSlider.size(); i++)
 	{
 		delete m_containerSlider[i];
 	}
+	
+	m_containerSliderName.clear();
 }
 
 void ve::ButtonMenu::releaseInitButton()

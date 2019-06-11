@@ -75,6 +75,7 @@ private:
 	float m_zoom = 1.0f;
 	sf::Rect<float> m_viewPortRect; // it determine position of the world frame on the whole screen
 	//
+	//
 	void spawnVillagers();
 	///SIMULATION INIT
 	void simulationInit();
@@ -86,7 +87,7 @@ private:
 	//
 	//==//
 	void drawLoadingScreenStage(sf::RenderWindow& window, sf::Rect<float> viewPort);
-
+	
 	///FIELDS
 	Terrain* m_hTerrain;
 	std::vector<Village*> m_villageContainer;

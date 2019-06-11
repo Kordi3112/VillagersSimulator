@@ -521,8 +521,11 @@ sf::Color Block::getBlockColor(BlockId blockId)
 	else if (blockId == ID_SEAWATER)return SEAWATER_COLOR;
 	else if (blockId == ID_GRASS)return GRASS_COLOR;
 	else if (blockId == ID_SAND)return SAND_COLOR;
+	else if (blockId == ID_TREE)return TREE_COLOR;
 	else if (blockId == ID_GRASSTREE)return GRASSTREE_COLOR;
 	else if (blockId == ID_SNOWTREE)return SNOWTREE_COLOR;
+	else if (blockId == ID_SNOW)return SNOW_COLOR;
 	else if (blockId == ID_ROCK1)return ROCK1_COLOR;
+	else if (blockId == ID_ROCK2)return ROCK2_COLOR;
 	else return sf::Color();
 }

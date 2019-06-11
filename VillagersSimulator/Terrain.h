@@ -25,6 +25,7 @@ const sf::Color WATER_COLOR = sf::Color::Cyan;
 const sf::Color SEAWATER_COLOR = sf::Color::Blue;
 const sf::Color GRASS_COLOR = sf::Color::Green;
 const sf::Color SAND_COLOR = sf::Color::Yellow;
+const sf::Color TREE_COLOR = sf::Color::Red;  //its for a while
 const sf::Color GRASSTREE_COLOR = sf::Color::Red;  //its for a while
 const sf::Color SNOWTREE_COLOR = sf::Color::Red;  //its for a while
 const sf::Color SNOW_COLOR = sf::Color::White;
@@ -45,6 +46,7 @@ public:
 		ID_SAND,
 		ID_SNOW,
 		ID_SWAMP,
+		ID_TREE,
 		ID_GRASSTREE,
 		ID_SNOWTREE,
 		ID_ROCK1,
