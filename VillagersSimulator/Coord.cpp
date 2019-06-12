@@ -4,23 +4,37 @@
 
 Coord::Coord()
 {
-	this->m_main = sf::Vector2f(0,0);
+	this->m_main = sf::Vector2i(0,0);
+	this->m_subx = 0;
+	this->m_suby = 0;
+}
+
+Coord::Coord(sf::Vector2i main)
+{
+	this->m_main = main;
 	this->m_subx = 0;
 	this->m_suby = 0;
 }
 
 Coord::Coord(sf::Vector2f main)
 {
-	this->m_main = main;
-	this->m_subx = 0;
-	this->m_suby = 0;
+	m_main = sf::Vector2i(main.x, main.y);
+	m_subx = 0;
+	m_suby = 0;
 }
 
-Coord::Coord(sf::Vector2f main, int subx, int suby)
+Coord::Coord(sf::Vector2i main, int subx, int suby)
 {
 	this->m_main = main;
 	this->m_subx = subx;
 	this->m_suby = suby;
+}
+
+Coord::Coord(sf::Vector2f main, int subx, int suby)
+{
+	m_main = sf::Vector2i(main.x, main.y);
+	m_subx = subx;
+	m_suby = suby;
 }
 
 
@@ -28,7 +42,7 @@ Coord::~Coord()
 {
 }
 
-sf::Vector2f Coord::getMain() const
+sf::Vector2i Coord::getMain() const
 {
 	return this->m_main;
 }
@@ -45,19 +59,19 @@ int Coord::getSubY() const
 
 void Coord::set()
 {
-	this->m_main = sf::Vector2f(0,0);
+	this->m_main = sf::Vector2i(0,0);
 	this->m_subx = 0;
 	this->m_suby = 0;
 }
 
-void Coord::set(sf::Vector2f main)
+void Coord::set(sf::Vector2i main)
 {
 	this->m_main = main;
 	this->m_subx = 0;
 	this->m_suby = 0;
 }
 
-void Coord::set(sf::Vector2f main, int subx, int suby)
+void Coord::set(sf::Vector2i main, int subx, int suby)
 {
 	this->m_main = main;
 	this->m_subx = subx;

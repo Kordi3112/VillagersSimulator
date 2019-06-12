@@ -81,7 +81,7 @@ public:
 	sf::Vector2f getMousePosRelativeToMap();
 	//
 	void refreshBrushPosRelativeToMap(sf::RenderWindow& window);
-	void refresh(unsigned deltaTime);
+	void refresh(unsigned deltaTime, sf::RenderWindow& window);
 	void refreshUI(sf::Vector2f clickerPosition);
 	///BRUSH
 	void setBrushSize(float size);
@@ -94,6 +94,8 @@ public:
 	void loadMap();
 	///POST RENDERING
 	//making the map better looking
+	void swapTerrainPointers();
+	void copyTerrain();
 	void postTerrainRender();
 private:
 
@@ -119,6 +121,7 @@ private:
 	sf::Vector2f m_cameraPosition;
 	//
 	Terrain* m_terrain;
+	Terrain* m_copyTerrain;
 	//BRUSH
 	Brush m_brush;
 	

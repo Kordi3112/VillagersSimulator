@@ -21,13 +21,22 @@ Coord Villager::getPosition()
 	return m_position;
 }
 
-void Villager::setStatistics(float iq, float strenght, float charisma, float religion, bool male)
+void Villager::setId(int id)
+{
+	m_id = id;
+}
+
+int Villager::getId() const
+{
+	return m_id;
+}
+
+void Villager::setStatistics(float iq, float strenght, float charisma, float religion)
 {
 	setStatistic(ID_IQ, iq);
 	setStatistic(ID_STRENGHT, strenght);
 	setStatistic(ID_CHARISMA, charisma);
 	setStatistic(ID_RELIGION, religion);
-	m_isMale = male;
 }
 
 void Villager::setStatistic(VillagerStat statistic, float number)
@@ -131,7 +140,43 @@ void Villager::changeStatistic(VillagerStat statistic, float number)
 
 }
 
+void Villager::checkPriority()
+{
+	if (m_actualPriority == VillagerPriorities::Priorities::ID_NOTHING)
+	{
+		//find new priority
+		m_actualPriority = m_villagerPriorities.drawLotsActivity();
+	}
+}
 
+Girl::Girl()
+{
+}
 
+Girl::~Girl()
+{
+}
 
+Boy::Boy()
+{
+}
 
+Boy::~Boy()
+{
+}
+
+Man::Man()
+{
+}
+
+Man::~Man()
+{
+}
+
+Woman::Woman()
+{
+}
+
+Woman::~Woman()
+{
+}

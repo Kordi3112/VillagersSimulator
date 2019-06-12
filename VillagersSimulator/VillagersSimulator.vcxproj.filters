@@ -27,12 +27,6 @@
     <ClCompile Include="Villager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Child.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mother.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Building.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +66,15 @@
     <ClCompile Include="FileManaging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Familly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VillagerPriorities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Village.h">
@@ -81,12 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Villager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Child.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mother.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Building.h">
@@ -126,6 +123,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileManaging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Familly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VillagerPriorities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

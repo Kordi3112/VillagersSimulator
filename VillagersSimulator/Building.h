@@ -3,22 +3,36 @@
 #include "Coord.h"
 
 
-enum BuildingType
-{
-	SIMPLY_HOUSE,
-	CHURCH,
-	TOWER,
 
 
-
-};
 
 class Building
 {
 public:
+	///ENUMS
+	enum BuildingType
+	{
+		LIVING_BUILDING, //uses for living
+		USABLE_BUILDING, //make materials, do activities etc.
+		BRIDGE,
+		ROAD,
+		ESSENTIALS, //campfires, fences, tables
+
+	};
+
+	enum LivingBuildingType
+	{
+		HUT,
+		SHELTER,
+		WOODEN_HOUSE,
+		CLAY_HOUSE,
+		BRICK_HOUSE,
+
+	};
+	///
 	//
 	Building();
-	virtual ~Building() = 0;
+	virtual ~Building();
 	//
 
 private:
@@ -28,48 +42,17 @@ private:
 	BuildingType m_type;
 };
 
-/*
-class House : public Building
+///=////////////////////////////////////////
+// LIVING BUILDINGS
+///=////////////////////////////////////////
+
+class LivingBuilding : Building
 {
 public:
-	House();
-	~House();
+	LivingBuilding();
+	~LivingBuilding();
+	//
+	
+private:
+
 };
-
-class Warehouse : public Building
-{
-public:
-	Warehouse();
-	~Warehouse();
-};
-
-class Farm : public Building
-{
-public:
-	Farm();
-	~Farm();
-};
-
-class School : public Building
-{
-public:
-	School();
-	~School();
-};
-
-class Church : public Building
-{
-public:
-	Church();
-	~Church();
-};
-
-
-class Factory : public Building 
-{
-public:
-	Factory();
-	~Factory();
-};
-*/
-

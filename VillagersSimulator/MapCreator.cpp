@@ -11,6 +11,8 @@ MapCreator::~MapCreator()
 {
 	//delete terrain
 	delete m_terrain;
+
+	delete m_copyTerrain;
 	//ButtonMenu
 	m_buttonMenu1.releaseAllComponents();
 	m_dialogWindowControler.releaseAllElements();
@@ -31,8 +33,7 @@ void MapCreator::init(sf::RenderWindow& window)
 	//create terrain
 	m_terrain = new Terrain();
 	//default piece of terrain
-	generateOcean();
-	saveMap();
+	m_terrain->generateBlueBackground();
 	//create map bitmaps
 	m_terrain->refreshAllChunksTexture();
 
@@ -68,19 +69,25 @@ void MapCreator::init(sf::RenderWindow& window)
 
 	m_dialogWindowControler.addElement("menuButton", menuButton);
 	//Choose Brush Buttons
+	ve::ButtonsPanel* brushButtonPanel = new ve::ButtonsPanel();
+	
+
 	ve::RectangleButton* brushType1 = new ve::RectangleButton();
 	brushType1->setTextures(m_pResources->mapCreator_Buttons.getTexturePtr("circleBrush_noClicked"), m_pResources->mapCreator_Buttons.getTexturePtr("circleBrush_onIt"), m_pResources->mapCreator_Buttons.getTexturePtr("circleBrush_clicked"));
 	brushType1->setSize(sf::Vector2f(m_buttonMenu1.getSize().x * 0.1f, m_buttonMenu1.getSize().x * 0.1f));
 	brushType1->setPosition(sf::Vector2f(m_buttonMenu1.getPosition().x - m_buttonMenu1.getSize().x / 4.0f, m_buttonMenu1.getPosition().y - m_buttonMenu1.getSize().y * 0.45f));
 	brushType1->setAdditionalParameters(ve::LOCK_WHEN_CLICKED);
 
+	brushButtonPanel->addButton("circleBrush", brushType1);
+
 	ve::RectangleButton* brushType2 = new ve::RectangleButton();
 	*brushType2 = *brushType1;
-	brushType2->setTextures(m_pResources->mapCreator_Buttons.getTexturePtr("rectangleBrush"));
+	brushType2->setTextures(m_pResources->mapCreator_Buttons.getTexturePtr("rectangleBrush_noClicked"), m_pResources->mapCreator_Buttons.getTexturePtr("rectangleBrush_onIt"), m_pResources->mapCreator_Buttons.getTexturePtr("rectangleBrush_clicked"));
 	brushType2->setPosition(sf::Vector2f(m_buttonMenu1.getPosition().x + m_buttonMenu1.getSize().x / 4.0f, m_buttonMenu1.getPosition().y - m_buttonMenu1.getSize().y * 0.45f));
 
-	m_buttonMenu1.addComponent("circleBrush",brushType1);
-	m_buttonMenu1.addComponent("rectangleBrush",brushType2);
+	brushButtonPanel->addButton("rectangleBrush", brushType2);
+
+	m_buttonMenu1.addComponent("brushButtonPanel", brushButtonPanel);
 	//Sliders
 	ve::Slider* sizeSlider = new ve::Slider();
 	sizeSlider->setSliderColor(sf::Color::White);
@@ -261,9 +268,23 @@ void MapCreator::refreshBrushPosRelativeToMap(sf::RenderWindow& window)
 
 }
 
-void MapCreator::refresh(unsigned deltaTime)
+void MapCreator::refresh(unsigned deltaTime, sf::RenderWindow& window)
 {
-	m_brush.setBrushShape(BrushShape::CIRCLE_BRUSH);
+	
+	///OPTIMALIZATION STUFF
+	int leftChunkId = m_terrain->getChunkId(getMousePosRelativeToMap() - sf::Vector2f(m_brush.getSize(), m_brush.getSize()));
+	int rightChunkId = m_terrain->getChunkId(getMousePosRelativeToMap() - sf::Vector2f(-m_brush.getSize(), m_brush.getSize()));
+	int botChunkId = m_terrain->getChunkId(getMousePosRelativeToMap() + sf::Vector2f(m_brush.getSize(), m_brush.getSize()));
+	//
+	if (sf::Mouse::getPosition().x < getEditAreaViewport().left * window.getSize().x || sf::Mouse::getPosition().x >(getEditAreaViewport().left + getEditAreaViewport().width) * window.getSize().x ||
+		sf::Mouse::getPosition().y < getEditAreaViewport().top * window.getSize().y || sf::Mouse::getPosition().y >(getEditAreaViewport().top + getEditAreaViewport().height) * window.getSize().y)
+	{
+		return;
+	}
+
+	if (m_buttonMenu1.isActive())return;
+
+	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))return;
 	///UPDATE BRUSH
 	//PICKED BLOCK
 	int clickedbuttonId = m_buttonMenu1.getComponentButtonPanel("terrainButtonPanel")->getClickedButtonId();
@@ -298,16 +319,26 @@ void MapCreator::refresh(unsigned deltaTime)
 	m_brush.setSize(m_buttonMenu1.getComponentSlider("sizeSlider")->getValue() * maxBrushSize);
 	//HARDNESS
 	m_brush.setHardness(m_buttonMenu1.getComponentSlider("hardnessSlider")->getValue());
+	//SHAPE
+	clickedbuttonId = m_buttonMenu1.getComponentButtonPanel("brushButtonPanel")->getClickedButtonId();
+	if (clickedbuttonId == -1)
+	{
+		m_brush.setBrushShape(BrushShape::CIRCLE_BRUSH);
+	}
+	else
+	{
+		std::string clickedName = m_buttonMenu1.getComponentButtonPanel("brushButtonPanel")->getName(clickedbuttonId);
+		if (clickedName == "circleBrush")
+			m_brush.setBrushShape(BrushShape::CIRCLE_BRUSH);
+		else if (clickedName == "rectangleBrush")
+			m_brush.setBrushShape(BrushShape::SQUARE_BRUSH);
+		//....
+
+	}
 	///RAND HANDLE
 	Random random;
-
-	///OPTIMALIZATION STUFF
-	int leftChunkId = m_terrain->getChunkId(getMousePosRelativeToMap() - sf::Vector2f(m_brush.getSize(), m_brush.getSize()));
-	int rightChunkId = m_terrain->getChunkId(getMousePosRelativeToMap() - sf::Vector2f(-m_brush.getSize(), m_brush.getSize()));
-	int botChunkId = m_terrain->getChunkId(getMousePosRelativeToMap() + sf::Vector2f(m_brush.getSize(), m_brush.getSize()));
-	//
-	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))return;
-	//
+	
+	///
 	for (int k = 0; k <= (botChunkId - rightChunkId) / (MAP_X_SIZE/CHUNK_X_SIZE); k++)
 	{
 
@@ -343,7 +374,19 @@ void MapCreator::refresh(unsigned deltaTime)
 					}
 					else if (m_brush.getBrushShape() == BrushShape::SQUARE_BRUSH)
 					{
+						sf::Vector2f blockGlobalPos = m_terrain->getGlobalBlockPosition(i + k * (MAP_X_SIZE / CHUNK_X_SIZE), x, y);
 
+						if (blockGlobalPos.x > m_mousePosRelativeToMap.x - m_brush.getSize() && blockGlobalPos.x < m_mousePosRelativeToMap.x + m_brush.getSize() &&
+							blockGlobalPos.y > m_mousePosRelativeToMap.y - m_brush.getSize() && blockGlobalPos.y < m_mousePosRelativeToMap.y + m_brush.getSize())
+						{
+							if (m_brush.getHardness() > 0.95f)
+								m_terrain->setBlock(i + k * (MAP_X_SIZE / CHUNK_X_SIZE), x, y, m_brush.getPickedBlocked());
+							else
+							{
+								if (random.Next(0, 95) < m_brush.getHardness() * 100)
+									m_terrain->setBlock(i + k * (MAP_X_SIZE / CHUNK_X_SIZE), x, y, m_brush.getPickedBlocked());
+							}
+						}
 					}
 				}
 			}
@@ -476,131 +519,88 @@ void MapCreator::generateOcean()
 
 void MapCreator::saveMap()
 {
-	std::string toSave;
-	//INFORMATIONS ABOUT SIZE
-	toSave += std::to_string(MAP_X_SIZE) +"\n"; 
-	toSave += std::to_string(MAP_Y_SIZE) +"\n";
-	//
-	toSave += std::to_string(CHUNK_X_SIZE) +"\n";
-	toSave += std::to_string(CHUNK_Y_SIZE) +"\n";
-	//MAP
-	for (int i = 0; i < m_terrain->getChunksNumber(); i++)
-	{
-		for (int x = 0; x < CHUNK_X_SIZE; x++)
-		{
-			for (int y = 0; y < CHUNK_Y_SIZE; y++)
-			{
-				Block block = m_terrain->getBlock(i, x, y);
-				if (block.blockId < 10)
-					toSave += "0";
-
-				toSave += std::to_string((int)block.blockId);
-
-				toSave += std::to_string(block.type);
-				toSave += ",";
-			}
-		}
-
-		toSave += "\n";
-	}
-
-	FileManaging::SaveStringToFile("../data/maptest.map", toSave);
+	m_terrain->saveToFile("../data/maptest.map");
 }
 
 void MapCreator::loadMap()
 {
-	if (m_terrain != nullptr)
+	m_terrain->loadFromFile("../data/maptest.map");
+
+}
+
+void MapCreator::swapTerrainPointers()
+{
+	Terrain* buforPtr = m_terrain;
+	m_terrain = m_copyTerrain;
+	m_copyTerrain = buforPtr;
+}
+
+void MapCreator::copyTerrain()
+{
+	if (m_copyTerrain == nullptr)
 	{
-		delete m_terrain;
-		m_terrain = new Terrain();
+		m_copyTerrain = new Terrain();
+		m_copyTerrain->copyFrom(m_terrain);
 	}
 	else
 	{
-		m_terrain = new Terrain();
+		m_copyTerrain->copyFrom(m_terrain);
 	}
-	
-	m_terrain->generateBlueBackground();
-
-	std::string fileStream;
-	//
-	FileManaging::LoadFileToString("../data/maptest.map", fileStream);
-	//
-
-	std::string letter;
-	std::string row;
-	std::string block;
-	int blockId = 0; //in row
-	int rowId = 0;
-
-	for (int i = 0; i < fileStream.length(); i++)
-	{
-		letter = fileStream.substr(i,1);
-		
-
-		if (letter == "\n")
-		{
-			if (rowId == 0)
-			{
-				//MAP_X_SIZE
-
-			}
-			else if (rowId == 1)
-			{
-				//MAP_Y_SIZE
-
-			}
-			else if (rowId == 2)
-			{
-				//CHUNK_X_SIZE
-
-			}
-			else if (rowId == 3)
-			{
-				//CHUNK_Y_SIZE
-
-			}
-
-			rowId++;
-
-			if (rowId < 4)
-			row.clear();
-
-			block.clear();
-			blockId = 0;
-		}
-		else if (letter == ",")
-		{
-			Block blockToFill;
-
-			if (block.substr(0, 1) == "0") //first number is 0
-			{
-				blockToFill.blockId = (Block::BlockId)atoi(block.substr(1, 1).c_str());
-			}
-			else
-			{
-				blockToFill.blockId = (Block::BlockId)atoi(block.substr(0, 2).c_str());
-			}
-
-			blockToFill.type = atoi(block.substr(2, 1).c_str());
-
-			m_terrain->setBlock(rowId - 4, blockId / CHUNK_X_SIZE, blockId % CHUNK_X_SIZE, blockToFill);
-
-			blockId++;
-			block.clear();
-		}
-		else
-		{
-			if(rowId<4)
-			row += letter;
-			block += letter;
-		}
-	}
-	
-	m_terrain->refreshAllChunksTexture();
-
-	std::cout << "BlockId" << m_terrain->getBlock(1, 2, 3).blockId << std::endl;
-
 }
+
 void MapCreator::postTerrainRender()
 {
+	//making copy for post render
+	copyTerrain();
+	//
+	Random random; //random handle
+	//
+	for (int i = 0; i < m_copyTerrain->getChunksNumber(); i++)
+	{
+		for (int x = 0; x < MAP_X_SIZE; x++)
+		{
+			for (int y = 0; y < MAP_Y_SIZE; y++)
+			{
+				
+				if (m_copyTerrain->getBlock(i, x, y).blockId == Block::BlockId::ID_SEAWATER)
+				{
+					int randNumber = (x* x * y * i + 1323) % 3 +1;
+
+					if (randNumber == 1)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_SEAWATER, 1));
+					else if (randNumber == 2)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_SEAWATER, 2));
+					else if (randNumber == 3)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_SEAWATER, 3));
+					
+				}
+				else if (m_copyTerrain->getBlock(i, x, y).blockId == Block::BlockId::ID_WATER)
+				{
+					int randNumber = (x * x * y * i + 1323) % 3 + 1;
+
+					if (randNumber == 1)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_WATER, 1));
+					else if (randNumber == 2)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_WATER, 2));
+					else if (randNumber == 3)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_WATER, 3));
+
+				}
+				else if (m_copyTerrain->getBlock(i, x, y).blockId == Block::BlockId::ID_GRASS)
+				{
+					int randNumber = (x * x * y * i + 1323) % 3 + 1;
+
+					if (randNumber == 1)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_GRASS, 1));
+					else if (randNumber == 2)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_GRASS, 2));
+					else if (randNumber == 3)
+						m_copyTerrain->setBlock(i, x, y, Block(Block::BlockId::ID_GRASS, 3));
+
+				}
+			}
+		}
+	}
+	//
+	m_copyTerrain->refreshAllChunksTexture();
 }

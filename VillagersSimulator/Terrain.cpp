@@ -29,7 +29,7 @@ void Terrain::generateMap(int seed)
 
 void Terrain::generateBlueBackground()
 {
-	sf::Vector2f genChunkPos0 = sf::Vector2f((CHUNK_X_SIZE + 1) / 2.0f, (CHUNK_Y_SIZE + 1) / 2.0f);//position of first chunk
+	sf::Vector2f genChunkPos0 = sf::Vector2f((CHUNK_X_SIZE ) / 2.0f, (CHUNK_Y_SIZE ) / 2.0f);//position of first chunk
 																	//f.e (16,16)
 	for (int x = 0; x < MAP_X_SIZE / CHUNK_X_SIZE; x++)
 	{
@@ -54,20 +54,22 @@ void Terrain::clear()
 	{
 		delete m_map[i];
 	}
+
+	m_map.clear();
 }
 
 void Terrain::refreshChunkTexture(int chunkId)
 {
 	if (chunkId < 0 or chunkId >= m_map.size())return;
 	//else
-	this->m_map[chunkId]->createTexture();
+	m_map[chunkId]->createTexture();
 }
 
 void Terrain::refreshAllChunksTexture()
 {
 	for (int x = 0; x < this->m_map.size(); x++)
 	{
-		this->m_map[x]->createTexture();
+		m_map[x]->createTexture();
 	}
 }
 
@@ -75,10 +77,10 @@ void Terrain::releaseChunks()
 {
 	for (int i = this->m_map.size() - 1 ; i > 0; i--)
 	{
-		delete this->m_map[i];					//and whole chunk
+		delete m_map[i];					//and whole chunk
 	}
 
-	this->m_map.clear();
+	m_map.clear();
 }
 
 void Terrain::renderChunks(sf::RenderWindow& window, sf::Vector2f cameraPosition, sf::Rect<float> viewPort, float zoom)
@@ -99,7 +101,7 @@ void Terrain::renderChunks(sf::RenderWindow& window, sf::Vector2f cameraPosition
 		sf::Sprite sprite;
 		sprite.setTexture(*this->m_map[id]->getTexturePtr());
 
-		sprite.setPosition((this->m_map[id]->getCoords()- cameraPosition) * chunkPxSize + frameCenter);
+		sprite.setPosition((this->m_map[id]->getCoords() - cameraPosition) * chunkPxSize + frameCenter);
 		
 		sprite.setOrigin(sf::Vector2f((CHUNK_X_SIZE + 1) / 2, (CHUNK_Y_SIZE + 1) / 2));
 		sprite.setScale(zoom, zoom);
@@ -198,18 +200,6 @@ void Terrain::addChunk(Chunk* chunk)
 	m_map.push_back(chunk);
 }
 
-void Terrain::updateTreeCoords()
-{
-	Random random;
-
-	for (int i = 0; i < m_map.size(); i++)
-	{
-		for (int x = 0; x < MAP_X_SIZE; x++)
-		{
-
-		}
-	}
-}
 
 int Terrain::getTreesNumber() const
 {
@@ -222,6 +212,186 @@ Coord Terrain::getTreeCoord(int id) const
 		return Coord();
 
 	else return m_treeCoord[id];
+}
+
+void Terrain::refreshTreeCoords()
+{
+	m_treeCoord.clear();
+
+	for (int i = 0; i < getChunksNumber(); i++)
+	{
+		for(int x = 0; x < CHUNK_X_SIZE; x++)
+		{
+			for(int y = 0; y < CHUNK_Y_SIZE; y++)
+			{
+				if (getBlock(i, x, y).blockId == Block::BlockId::ID_GRASSTREE)
+				{
+					int random = x * y * i % 4;
+
+					if (random == 0)
+						m_treeCoord.push_back(Coord(getGlobalBlockPosition(i, x, y), 0, 0));
+					else if (random == 1)
+						m_treeCoord.push_back(Coord(getGlobalBlockPosition(i, x, y), 0, 1));
+					else if (random == 2)
+						m_treeCoord.push_back(Coord(getGlobalBlockPosition(i, x, y), 1, 0));
+					else if (random == 3)
+						m_treeCoord.push_back(Coord(getGlobalBlockPosition(i, x, y), 1, 1));
+				}
+			}
+		}
+
+	}
+}
+
+bool Terrain::loadFromFile(std::string path)
+{
+	clear();
+
+	generateBlueBackground();
+
+	std::string fileStream;
+	//
+	if (FileManaging::LoadFileToString("../data/maptest.map", fileStream) != FileManaging::GOOD)
+	{
+		return false;
+	}
+	//
+
+	std::string letter;
+	std::string row;
+	std::string block;
+	int blockId = 0; //in row
+	int rowId = 0;
+
+	for (int i = 0; i < fileStream.length(); i++)
+	{
+		letter = fileStream.substr(i, 1);
+
+
+		if (letter == "\n")
+		{
+			if (rowId == 0)
+			{
+				//MAP_X_SIZE
+
+			}
+			else if (rowId == 1)
+			{
+				//MAP_Y_SIZE
+
+			}
+			else if (rowId == 2)
+			{
+				//CHUNK_X_SIZE
+
+			}
+			else if (rowId == 3)
+			{
+				//CHUNK_Y_SIZE
+
+			}
+
+			rowId++;
+
+			if (rowId < 4)
+				row.clear();
+
+			block.clear();
+			blockId = 0;
+		}
+		else if (letter == ",")
+		{
+			Block blockToFill;
+
+			if (block.substr(0, 1) == "0") //first number is 0
+			{
+				blockToFill.blockId = (Block::BlockId)atoi(block.substr(1, 1).c_str());
+			}
+			else
+			{
+				blockToFill.blockId = (Block::BlockId)atoi(block.substr(0, 2).c_str());
+			}
+
+			blockToFill.type = atoi(block.substr(2, 1).c_str());
+
+			setBlock(rowId - 4, blockId / CHUNK_X_SIZE, blockId % CHUNK_X_SIZE, blockToFill);
+
+			blockId++;
+			block.clear();
+		}
+		else
+		{
+			if (rowId < 4)
+				row += letter;
+			block += letter;
+		}
+	}
+
+	refreshAllChunksTexture();
+
+	return true;
+}
+
+bool Terrain::saveToFile(std::string path)
+{
+	std::string toSave;
+	//INFORMATIONS ABOUT SIZE
+	toSave += std::to_string(MAP_X_SIZE) + "\n";
+	toSave += std::to_string(MAP_Y_SIZE) + "\n";
+	//
+	toSave += std::to_string(CHUNK_X_SIZE) + "\n";
+	toSave += std::to_string(CHUNK_Y_SIZE) + "\n";
+	//MAP
+	for (int i = 0; i < m_map.size(); i++)
+	{
+		for (int x = 0; x < CHUNK_X_SIZE; x++)
+		{
+			for (int y = 0; y < CHUNK_Y_SIZE; y++)
+			{
+				Block block = getBlock(i, x, y);
+				if (block.blockId < 10)
+					toSave += "0";
+
+				toSave += std::to_string((int)block.blockId);
+
+				toSave += std::to_string(block.type);
+				toSave += ",";
+			}
+		}
+
+		toSave += "\n";
+	}
+
+	if (FileManaging::SaveStringToFile("../data/maptest.map", toSave) != FileManaging::STATUS::GOOD)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void Terrain::copyFrom(Terrain* terrain)
+{
+	clear();
+	
+	generateBlueBackground();
+
+	for (int i = 0; i < terrain->getChunksNumber(); i++)
+	{
+
+		
+		for (int x = 0; x < CHUNK_X_SIZE; x++)
+		{
+			for (int y = 0; y < CHUNK_Y_SIZE; y++)
+			{
+				setBlock(i, x, y, terrain->getBlock(i,x,y));
+			}
+		}
+		
+		
+	}
+
+	refreshAllChunksTexture();
 }
 
 int Terrain::getChunkId(sf::Vector2f blockPosition)
@@ -453,18 +623,32 @@ sf::Vector2f Chunk::getGlobalBlockPosition(int x, int y) const
 
 sf::Texture* Chunk::getTexturePtr() const
 {
-	return this->m_texture;
+	return m_texture;
+}
+
+void Chunk::setTexturePtr(sf::Texture* texture)
+{
+	//if(m_texture != nullptr)
+	//	delete m_texture;
+
+	m_texture = texture;
 }
 
 void Chunk::createTexture()
 {
+	createTextureOnDemand(false);
+}
 
-	if (!m_changed)return; //its not neccesary to update if chunks has no changes
+void Chunk::createTextureOnDemand(bool onDemand)
+{
+	if(!onDemand)
+		if (!m_changed)return; //its not neccesary to update if chunks has no changes
 
-	delete this->m_texture; //destroy previous texture
+	if(m_texture != nullptr)
+	delete m_texture; //destroy previous texture
 
-	this->m_texture = new sf::Texture(); //create new Texture
-	this->m_texture->create(CHUNK_X_SIZE, CHUNK_Y_SIZE); //...
+	m_texture = new sf::Texture(); //create new Texture
+	m_texture->create(CHUNK_X_SIZE, CHUNK_Y_SIZE); //...
 
 	sf::Image image;
 
@@ -475,57 +659,96 @@ void Chunk::createTexture()
 	{
 		for (int y = 0; y < CHUNK_Y_SIZE; y++)
 		{
-			image.setPixel(x, y, Block::getBlockColor(getBlock(x,y).blockId));
+			image.setPixel(x, y, Block::getBlockColor(getBlock(x,y)));
 		}
 	}
 	
 
-	this->m_texture->loadFromImage(image);
+	m_texture->loadFromImage(image);
 
 	m_changed = false;
 }
 
 Block::Block()
 {
-	this->blockId = ID_NOTHING;
+	blockId = ID_NOTHING;
 }
 
 Block::Block(BlockId id)
 {
-	this->blockId = id;
-	this->color = Block::getBlockColor(id);
+	blockId = id;
+	Block::type = 0;
 }
 
 Block::Block(BlockId id, int type)
 {
-	this->blockId = id;
-	this->type = type;
-	this->color = Block::getBlockColor(id);
+	blockId = id;
+	Block::type = type;
+
 }
 
 Block::Block(BlockId id, int type, sf::Color color)
 {
-	this->blockId = id;
-	this->type = type;
-	this->color = color;
+	blockId = id;
+	Block::type = type;
+	color = color;
 }
 
 Block::~Block()
 {
 }
 
-sf::Color Block::getBlockColor(BlockId blockId)
+
+sf::Color Block::getBlockColor(Block block)
 {
-	if (blockId == ID_NOTHING)return NOTHING_COLOR;
-	else if (blockId == ID_WATER)return WATER_COLOR;
-	else if (blockId == ID_SEAWATER)return SEAWATER_COLOR;
-	else if (blockId == ID_GRASS)return GRASS_COLOR;
-	else if (blockId == ID_SAND)return SAND_COLOR;
-	else if (blockId == ID_TREE)return TREE_COLOR;
-	else if (blockId == ID_GRASSTREE)return GRASSTREE_COLOR;
-	else if (blockId == ID_SNOWTREE)return SNOWTREE_COLOR;
-	else if (blockId == ID_SNOW)return SNOW_COLOR;
-	else if (blockId == ID_ROCK1)return ROCK1_COLOR;
-	else if (blockId == ID_ROCK2)return ROCK2_COLOR;
-	else return sf::Color();
+	if (block.color != sf::Color())
+		return block.color;
+
+
+	if (block.blockId == ID_NOTHING)
+		return NOTHING_COLOR;
+	else if (block.blockId == ID_WATER)
+	{
+		if (block.type == 0)
+			return WATER_COLOR;
+		else if(block.type == 1)
+			return WATER_COLOR_1;
+		else if (block.type == 2)
+			return WATER_COLOR_2;
+		else if (block.type == 3)
+			return WATER_COLOR_3;
+	}
+	else if (block.blockId == ID_SEAWATER)
+	{
+		if(block.type == 0)
+			return SEAWATER_COLOR;
+		else if (block.type == 1)
+			return SEAWATER_COLOR_1;	
+		else if (block.type == 2)
+			return SEAWATER_COLOR_2;
+		else if (block.type == 3)
+			return SEAWATER_COLOR_3;
+	}
+	else if (block.blockId == ID_GRASS)
+	{
+		if (block.type == 0)
+			return GRASS_COLOR;
+		else if (block.type == 1)
+			return GRASS_COLOR_1;
+		else if (block.type == 2)
+			return GRASS_COLOR_2;
+		else if (block.type == 3)
+			return GRASS_COLOR_3;
+
+	}
+	else if (block.blockId == ID_SAND)return SAND_COLOR;
+	else if (block.blockId == ID_TREE)return TREE_COLOR;
+	else if (block.blockId == ID_GRASSTREE)return GRASSTREE_COLOR;
+	else if (block.blockId == ID_SNOWTREE)return SNOWTREE_COLOR;
+	else if (block.blockId == ID_SNOW)return SNOW_COLOR;
+	else if (block.blockId == ID_ROCK1)return ROCK1_COLOR;
+	else if (block.blockId == ID_ROCK2)return ROCK2_COLOR;
+	
+	
+	return sf::Color();
 }

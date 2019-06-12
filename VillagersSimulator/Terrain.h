@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 //
+#include "FileManaging.h"
 #include "Random.h"
 #include "Coord.h"
 #include "MathOperations.h"
@@ -19,11 +20,26 @@ enum Biomes
 
 };
 
-
+///COLORS DEFINITION
 const sf::Color NOTHING_COLOR = sf::Color::Transparent;
+//
 const sf::Color WATER_COLOR = sf::Color::Cyan;
+const sf::Color WATER_COLOR_1 = sf::Color(0,128,255);
+const sf::Color WATER_COLOR_2 = sf::Color(20,130,255);
+const sf::Color WATER_COLOR_3 = sf::Color(20,120,235);
+//
 const sf::Color SEAWATER_COLOR = sf::Color::Blue;
+const sf::Color SEAWATER_COLOR_1 = sf::Color(20,100,160);
+const sf::Color SEAWATER_COLOR_2 = sf::Color(30,120,170);
+const sf::Color SEAWATER_COLOR_3 = sf::Color(30,115,160);
+//
 const sf::Color GRASS_COLOR = sf::Color::Green;
+const sf::Color GRASS_COLOR_1 = sf::Color(65, 160, 30);
+const sf::Color GRASS_COLOR_2 = sf::Color(60, 150, 30);
+const sf::Color GRASS_COLOR_3 = sf::Color(85, 150, 35);
+
+
+//
 const sf::Color SAND_COLOR = sf::Color::Yellow;
 const sf::Color TREE_COLOR = sf::Color::Red;  //its for a while
 const sf::Color GRASSTREE_COLOR = sf::Color::Red;  //its for a while
@@ -54,8 +70,8 @@ public:
 	};
 	//
 	BlockId blockId;
-	int type=0;
-	sf::Color color;
+	int type;
+	sf::Color color = sf::Color();
 	//
 	Block();
 	Block(BlockId id);
@@ -64,7 +80,7 @@ public:
 	~Block();
 
 	//
-	static sf::Color getBlockColor(BlockId blockId);
+	static sf::Color getBlockColor(Block block);
 
 };
 
@@ -93,7 +109,10 @@ public:
 	//
 	//
 	sf::Texture* getTexturePtr() const;
+	void setTexturePtr(sf::Texture* texture);
+
 	void createTexture();   //its many process demand function!
+	void createTextureOnDemand(bool onDemand); //onDemand = true; create new texture even if is up to date
 private:
 	Block m_block[CHUNK_X_SIZE][CHUNK_Y_SIZE];
 	bool m_isUnitary = false; //if all block is chunk are the same, it will help for fast render
@@ -139,12 +158,14 @@ public:
 	bool setBlock(int n, int x, int y, Block::BlockId id, int type, sf::Color blockColor);
 	void addChunk(Chunk* chunk);
 	///TREES
-	void updateTreeCoords();
 	int getTreesNumber() const;
 	Coord getTreeCoord(int id) const;
+	void refreshTreeCoords();
 	///SAVE & LOAD
 	bool loadFromFile(std::string path);
 	bool saveToFile(std::string path);
+	//
+	void copyFrom(Terrain* terrain);
 	///
 	//
 	//-1 means fail

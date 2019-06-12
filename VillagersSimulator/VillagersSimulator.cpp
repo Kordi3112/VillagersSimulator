@@ -3,21 +3,47 @@
 #include <windows.h>
 #include <iostream>
 #include <time.h>
-#include <thread>
+#include <conio.h>
 #include "MainEngine.h"
 #include "Random.h"
-
+#include "VillagerPriorities.h"
 
 
 
 int main()
 {
 	
+	VillagerPriorities priorities;
+	priorities.equalDistribution();
+
+	//priorities.addPoints(VillagerPriorities::Priorities::ID_REVOLTING, -20.f);
+	priorities.addPoints(VillagerPriorities::Priorities::ID_EATING, 50.f);
+	priorities.addPoints(VillagerPriorities::Priorities::ID_DRINKING, 20.0f);
+
+	PrioritiesChanses priorityChanses;
+	priorityChanses.setDefault();
+	priorityChanses.raging = 10.0f;
+	priorityChanses.drinking = 5;
+	priorities.setPriorityChances(priorityChanses);
+
+	std::cout << "----------------------------------" << std::endl;
+	for (int x = 0; x < priorities.PRIORITIES_NUMBER; x++)
+	{
+		std::cout << x << ": " << priorities.getPriorityValueById(x) << std::endl;
+	}
+
+	std::cout << "----------------------------------" << std::endl;
+
+	for (int i = 0; i < 200; i++)
+	{
+		std::cout << "i: " << i << " Priority: " << priorities.drawLotsActivity() << std::endl;
+	}
+	std::cout << "----------------------------------" << std::endl;
+
+	//_getch();
 	//JUNKS
 
-	sf::Vector2f cameraPos = sf::Vector2f(500,500);
 	int FPS = 0;
-	float g_zoom=2.f;
 	sf::Clock minute;
 	//
 	///----CLOCKS
@@ -39,8 +65,8 @@ int main()
 	//RESOURCES
 
 
-	hMainEngine.changeScene(MainEngine::GAMESTAGE::MAPCREATOR);
-	//hMainEngine.changeScene(MainEngine::GAMESTAGE::SIMULATION);
+	//hMainEngine.changeScene(MainEngine::GAMESTAGE::MAPCREATOR);
+	hMainEngine.changeScene(MainEngine::GAMESTAGE::SIMULATION);
 
 	//
 	//Thread
@@ -77,13 +103,15 @@ int main()
 		frameTimeClock.restart();
 		float deltaTime = timeDifference / 1000000.0f;
 
-		hMainEngine.refresh(deltaTime);
+		hMainEngine.refresh(deltaTime, hWindow);
 		hMainEngine.readInput(deltaTime);
 
 		///---------RENDER
 		hWindow.clear(sf::Color::Green);
 		//
+		//hMainEngine.m_mutex.lock();
 		hMainEngine.draw(hWindow);
+		//hMainEngine.m_mutex.unlock();
 		//
 		hWindow.display();
 		FPS++;

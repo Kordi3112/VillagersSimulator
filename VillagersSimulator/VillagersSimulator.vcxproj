@@ -127,16 +127,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Building.cpp" />
-    <ClCompile Include="Child.cpp" />
     <ClCompile Include="ApiEvents.cpp" />
     <ClCompile Include="Coord.cpp" />
     <ClCompile Include="DialogWindow.cpp" />
+    <ClCompile Include="DrawObject.cpp" />
+    <ClCompile Include="Familly.cpp" />
     <ClCompile Include="FileManaging.cpp" />
     <ClCompile Include="IzoMap.cpp" />
     <ClCompile Include="MainEngine.cpp" />
     <ClCompile Include="MapCreator.cpp" />
     <ClCompile Include="MathOperations.cpp" />
-    <ClCompile Include="Mother.cpp" />
     <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Resources.cpp" />
@@ -144,20 +144,21 @@
     <ClCompile Include="TexturePack.cpp" />
     <ClCompile Include="Village.cpp" />
     <ClCompile Include="Villager.cpp" />
+    <ClCompile Include="VillagerPriorities.cpp" />
     <ClCompile Include="VillagersSimulator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Building.h" />
-    <ClInclude Include="Child.h" />
     <ClInclude Include="ApiEvents.h" />
     <ClInclude Include="Coord.h" />
     <ClInclude Include="DialogWindow.h" />
+    <ClInclude Include="DrawObject.h" />
+    <ClInclude Include="Familly.h" />
     <ClInclude Include="FileManaging.h" />
     <ClInclude Include="IzoMap.h" />
     <ClInclude Include="MainEngine.h" />
     <ClInclude Include="MapCreator.h" />
     <ClInclude Include="MathOperations.h" />
-    <ClInclude Include="Mother.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Resources.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="TexturePack.h" />
     <ClInclude Include="Village.h" />
     <ClInclude Include="Villager.h" />
+    <ClInclude Include="VillagerPriorities.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

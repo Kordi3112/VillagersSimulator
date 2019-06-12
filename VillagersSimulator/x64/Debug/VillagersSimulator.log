@@ -1,0 +1,40 @@
+﻿  Building.cpp
+  Child.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Building.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  ApiEvents.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Coord.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\ApiEvents.cpp(33,44): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+  Coord.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\ApiEvents.cpp(43,44): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+  DialogWindow.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Coord.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  FileManaging.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\DialogWindow.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  IzoMap.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\FileManaging.cpp(48,29): warning C4267:  '=': conversion from 'size_t' to 'DWORD', possible loss of data
+  MainEngine.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\IzoMap.h(3,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  MapCreator.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MainEngine.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  MathOperations.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MapCreator.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  Mother.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\MathOperations.h(3,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  PerlinNoise.cpp
+  Random.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Coord.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Random.cpp(5,22): warning C4244:  'initializing': conversion from 'time_t' to 'unsigned long', possible loss of data
+  Resources.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Random.cpp(45,13): warning C4244:  'argument': conversion from 'unsigned __int64' to 'int', possible loss of data
+  Terrain.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\TexturePack.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  TexturePack.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Terrain.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  Village.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\TexturePack.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  Villager.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Coord.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  VillagersSimulator.cpp
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\Coord.h(2,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  Generating Code...
+D:\VisualProjects\VillagersSimulator\VillagersSimulator\VillagersSimulator\VillagersSimulator.cpp(1,10): error C1083:  Cannot open include file: 'SFML/Graphics.hpp': No such file or directory

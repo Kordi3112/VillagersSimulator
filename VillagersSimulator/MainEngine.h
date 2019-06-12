@@ -6,15 +6,12 @@
 #include "ApiEvents.h"
 #include "Resources.h"
 #include "MapCreator.h"
-
+#include "DrawObject.h"
 
 struct GameSettings
 {
-	int seed;//its seed for world generator
-	int clevernessLevel = 10; //this level determine an desire of villagers to create something
-	int vitalityLevel = 10; //Its main ratio of villager's resistance to damage
-	int fertilitylevel = 10;//frequency of childbirths
-
+	///For VillagerPriorities
+	PrioritiesChanses prioritiesChanses;
 };
 
 struct GameStates
@@ -30,7 +27,7 @@ public:
 	enum GAMESTAGE {
 		LOADING_SCREEN,
 		MAIN_MENU,
-		CHOOSESETMAP,
+		CHOOSE_MAP,
 		MAPCREATOR,
 		SIMULATION, //game
 	};
@@ -49,13 +46,19 @@ public:
 	MainEngine::GAMESTAGE getCurrentGameStage() const;
 	void changeScene(MainEngine::GAMESTAGE stage);
 	//
+	void moveCamera(sf::Vector2f vector);
 	void setCameraPosition(sf::Vector2f position);
 	sf::Vector2f getCameraPosition() const;
 	void setZoom(float zoom);
 	float getZoom() const;
 	void setViewPort(sf::Rect<float> rect);
 	sf::Rect<float> getViewPort() const;
+	///
+	sf::Vector2f getScreenPosOfMapPos(Terrain* terrain, sf::Vector2f mapPosition) const;
+	sf::Vector2f getScreenPosOfMapPos(Terrain* terrain, sf::Vector2i mapPosition, sf::Vector2f cameraPosition, sf::RenderWindow& window, sf::FloatRect viewPort, float zoom) const;
 	//
+	sf::Vector2i getMapCoordFromScreenCoord(sf::Vector2f position, sf::RenderWindow& window);
+	///THREAD
 	void ThreadFunction();//this function is for second thread
 	///DRAW
 	void draw(sf::RenderWindow& window);
@@ -63,25 +66,39 @@ public:
 	void readInput(float deltaTime);
 	void readKeyPressedInput(sf::Event& event);
 	///REFRESH
-	void refresh(float deltaTime); //in us
+	void refresh(float deltaTime, sf::RenderWindow& window); //in us
 	//
 	void loadResources();
 	Resources* getResourcesPtr();
-	//
+	///RENDER WINDOW
 	sf::RenderWindow* m_pRenderWindow;
+	///JUNKS
+	int m_FPS_counter = 0;
+	sf::Clock m_clock;
+	sf::Mutex m_mutex;
+	///
 private:
 
 	sf::Vector2f m_cameraPosition;
 	float m_zoom = 1.0f;
-	sf::Rect<float> m_viewPortRect; // it determine position of the world frame on the whole screen
+	sf::Rect<float> m_viewPortRect; // it determines position of the world frame on the whole screen
 	//
 	//
 	void spawnVillagers();
+	///MAIN_MENU INIT
+	void mainMenuInit(sf::RenderWindow& window);//
+	///CHOOSE_MAP INIT
+	void chooseMapInit(sf::RenderWindow& window);//
+	//DRAW
+	void drawMainMenu(sf::RenderWindow& window);//
+	void drawChooseMap(sf::RenderWindow& window);//
 	///SIMULATION INIT
-	void simulationInit();
+	void simulationInit(sf::RenderWindow& window);
+	bool m_firstSpawnerSet = true;
 	///SIMULATION FRAME
 	void drawInterface(sf::RenderWindow& window);
 	void drawGameFrame(sf::RenderWindow& window);
+	void drawObjects(sf::RenderWindow& window);
 	//==//
 	void drawMapCreatorStage(sf::RenderWindow& window);
 	//
@@ -90,9 +107,15 @@ private:
 	
 	///FIELDS
 	Terrain* m_hTerrain;
-	std::vector<Village*> m_villageContainer;
+	std::vector<Village> m_villageContainer;
 	//
 	MapCreator m_mapCreator;
+	//
+	ve::ButtonMenu m_villagerInfo;
+	//
+	ve::DialogWindowControler m_mainMenuDialogControler;
+	//
+	ve::DialogWindowControler m_chooseDialogControler;
 	//
 	ApiEvents m_apiEvents;
 	GAMESTAGE m_gameStage;

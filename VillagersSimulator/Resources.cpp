@@ -10,8 +10,9 @@ void Resources::loadTextures()
 {
 	///OBJECTS
 	//environment
-	objects_environment.loadNewTexture("tree", "../data/texturepacks/environment/tree.png");
-
+	objects_environment.loadNewTexture("tree", "../data/texturepacks/objects/environment/tree.png");
+	//buildings
+	objects_buildings.loadNewTexture("spawner", "../data/texturepacks/objects/buildings/spawner.png");
 
 	///MAP CREATOR
 	//===>Buttons
@@ -23,7 +24,10 @@ void Resources::loadTextures()
 	mapCreator_Buttons.loadNewTexture("circleBrush_onIt", "../data/texturepacks/mapCreator/buttons/circleBrush_onIt.png");
 	mapCreator_Buttons.loadNewTexture("circleBrush_clicked", "../data/texturepacks/mapCreator/buttons/circleBrush_clicked.png");
 	//
-	mapCreator_Buttons.loadNewTexture("rectangleBrush", "../data/texturepacks/mapCreator/buttons/rectangleBrush.png");
+	mapCreator_Buttons.loadNewTexture("rectangleBrush_noClicked", "../data/texturepacks/mapCreator/buttons/rectangleBrush_noClicked.png");
+	mapCreator_Buttons.loadNewTexture("rectangleBrush_onIt", "../data/texturepacks/mapCreator/buttons/rectangleBrush_onIt.png");
+	mapCreator_Buttons.loadNewTexture("rectangleBrush_clicked", "../data/texturepacks/mapCreator/buttons/rectangleBrush_clicked.png");
+	//
 	mapCreator_Buttons.loadNewTexture("rightPanelInit", "../data/texturepacks/mapCreator/buttons/rightPanelInit.png");
 	//Seawater
 	mapCreator_Buttons.loadNewTexture("seawater_noClicked", "../data/texturepacks/mapCreator/buttons/seawater_noClicked.png");

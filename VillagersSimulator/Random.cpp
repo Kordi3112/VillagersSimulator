@@ -48,7 +48,7 @@ unsigned long int Random::Next()
 
 unsigned long int Random::Next(int from, int to)
 {
-	return abs(Next() % (to - from + 1));
+	return abs(Next() % (to - from + 1) + from);
 }
 
 float Random::NextF(float from, float to)

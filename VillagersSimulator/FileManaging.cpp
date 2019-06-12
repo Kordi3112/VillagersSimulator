@@ -28,6 +28,8 @@ FileManaging::STATUS FileManaging::LoadFileToString(std::string path, std::strin
 
 	GlobalFree(Bufor); // Zwolnij bufor
 	CloseHandle(hPlik); // Zamknij plik
+
+	return STATUS::GOOD;
 }
 
 FileManaging::STATUS FileManaging::SaveStringToFile(std::string path, std::string& toSave)
@@ -63,4 +65,5 @@ FileManaging::STATUS FileManaging::SaveStringToFile(std::string path, std::strin
 
 	CloseHandle(hPlik); // Zamknij plik
 
+	return STATUS::GOOD;
 }
